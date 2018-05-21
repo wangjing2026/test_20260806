@@ -10,7 +10,7 @@
 BUILD_THIRDPARTY="1"
 BUILD_ALCI="1"
 BUILD_SL="1"
-BUILD_DLDL="1"
+BUILD_DLDL="0"
 
 #WEISS_COMPILER_VERSION="GCC4.3.2"
 WEISS_COMPILER_VERSION="GCC4.4.1"
@@ -84,7 +84,7 @@ if [ "$PRODUCT" = "MASH" -o "$PRODUCT" = "BP" ]; then
 	export TOOL_PREFIX=powerpc-wrs-linux-gnu-ppc_e500v2-glibc_cgl-
 
 
-elif [ "(" "$PRODUCT" = "LOIRE" -o "$PRODUCT" = "ALABAMA" ")" -a "(" ! "$SUB_PRODUCT" = "EX_SERIES_2" -a ! "$SUB_PRODUCT" = "ECO_LOIRE2" ")" ]; then
+elif [ "(" "$PRODUCT" = "LOIRE" -o "$PRODUCT" = "ALABAMA" ")" -a ! "$SUB_PRODUCT" = "EX_SERIES_2" ]; then
 
 	# for EX-Loire/EX-Alabama L3.2
 	export PATH=/opt/WindRiver30/workbench-3.1/foundation//x86-linux2/wrbin:/opt/WindRiver30/wrlinux-3.0/layers/wrll-toolchain-4.3-85/powerpc/toolchain/x86-linux2/bin:/opt/WindRiver30:/opt/WindRiver30/utilities-1.0/x86-linux2/bin:/opt/WindRiver30/workbench-3.1/analysis/host/bin/x86-linux2:/opt/WindRiver30/workbench-3.1/x86-linux2/bin:$PATH
@@ -123,7 +123,7 @@ elif [ "(" "$PRODUCT" = "LOIRE" -o "$PRODUCT" = "ALABAMA" ")" -a "(" ! "$SUB_PRO
 	export TOOLCHAIN_PATH=/opt/WindRiver30/wrlinux-3.0/sysroots/mfp_sys470d-glibc_std/sysroot
 	export TOOL_PREFIX=powerpc-wrs-linux-gnu-ppc_440fp-glibc_std-
 
-elif [ "(" "$PRODUCT" = "WEISS" -a "$WEISS_COMPILER_VERSION" = "GCC4.4.1" ")" -o "(" "(" "$PRODUCT" = "LOIRE" -o "$PRODUCT" = "ALABAMA" ")" -a "(" "$SUB_PRODUCT" = "EX_SERIES_2" -o "$SUB_PRODUCT" = "ECO_LOIRE2" ")" ")" -o "$PRODUCT" = "ST_HELENS" -o "$PRODUCT" = "S2_PRODUCT" ]; then
+elif [ "(" "$PRODUCT" = "WEISS" -a "$WEISS_COMPILER_VERSION" = "GCC4.4.1" ")" -o "(" "(" "$PRODUCT" = "LOIRE" -o "$PRODUCT" = "ALABAMA" ")" -a "$SUB_PRODUCT" = "EX_SERIES_2" ")" -o "$PRODUCT" = "ST_HELENS" -o "$PRODUCT" = "S2_PRODUCT" ]; then
 
 	# for Weisshorn L4.0 with GCC4.4.1
 	export PATH="/opt/WindRiver40/wrlinux-4/layers/wrll-toolchain-4.4a-323/powerpc/toolchain/x86-linux2/bin:/opt/WindRiver40/wrlinux-4/foundation//x86-linux2/wrbin:$PATH"
@@ -599,7 +599,7 @@ folders=(
 #$ROOT_DIR/dev/DL/AnnotationLibWrapper
 #$ROOT_DIR/dev/DL/SkuldLib
 #$ROOT_DIR/dev/DL/DIM
-$ROOT_DIR/dev/DL/CPE
+#$ROOT_DIR/dev/DL/CPE
 #$ROOT_DIR/dev/DL/DEM
 #$ROOT_DIR/dev/DL/PE/PE_EmailSend
 #$ROOT_DIR/dev/DL/PE/PE_CnvtToTIFF
