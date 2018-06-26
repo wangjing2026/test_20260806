@@ -186,7 +186,7 @@ PATCH_ITEMS=(
 #$EB2/build/common/bin/networkservice/remoteApplication
 #$EB2/build/common/bin/networkservice/sendmail
 #$EB2/build/common/bin/networkservice/slp
-#$EB2/build/common/bin/networkservice/smb
+$EB2/build/common/bin/networkservice/smb
 #$EB2/build/common/bin/networkservice/snmp
 #$EB2/build/common/bin/networkservice/stage2
 #$EB2/build/common/bin/networkservice/telnet
@@ -522,7 +522,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/lib/alpingtraceNMO.so.0
 #$EB2/build/release/lib/alpowermanagementNMO.so.0
 #$EB2/build/release/lib/alslpNMO.so.0
-#$EB2/build/release/lib/alsmbNMO.so.0
+$EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/lib/alsnmpNMO.so.0
 #$EB2/build/release/lib/altcpipNMO.so.0
 #$EB2/build/release/lib/alWirelessNMO.so.0
@@ -9861,9 +9861,9 @@ PATCH_ITEMS=(
 #$EB2/NoBuildItems/AL/Network/DB_CONFIG
 #$EB2/NoBuildItems/AL/Network/ddns.conf
 #$EB2/NoBuildItems/AL/Network/DefaultDeviceServices.xml
-#$EB2/NoBuildItems/AL/Network/DefaultNetwork.xml
-#$EB2/NoBuildItems/AL/Network/DefaultNetwork_AirPrint.xml
-#$EB2/NoBuildItems/AL/Network/DefaultSecurityNetwork.xml
+$EB2/NoBuildItems/AL/Network/DefaultNetwork.xml
+$EB2/NoBuildItems/AL/Network/DefaultNetwork_AirPrint.xml
+$EB2/NoBuildItems/AL/Network/DefaultSecurityNetwork.xml
 #$EB2/NoBuildItems/AL/Network/dhclient.conf
 #$EB2/NoBuildItems/AL/Network/dhclient-exit-hooks
 #$EB2/NoBuildItems/AL/Network/dhclient-script
@@ -9922,7 +9922,7 @@ PATCH_ITEMS=(
 #$EB2/NoBuildItems/AL/Network/nis.schema
 #$EB2/NoBuildItems/AL/Network/nprint_log
 #$EB2/NoBuildItems/AL/Network/nprint_log-ssd
-#$EB2/NoBuildItems/AL/Network/nsm.xml
+$EB2/NoBuildItems/AL/Network/nsm.xml
 #$EB2/NoBuildItems/AL/Network/nwprint.conf
 #$EB2/NoBuildItems/AL/Network/openldap.schema
 #$EB2/NoBuildItems/AL/Network/papd.conf
@@ -9947,7 +9947,7 @@ PATCH_ITEMS=(
 #$EB2/NoBuildItems/AL/Network/slplog
 #$EB2/NoBuildItems/AL/Network/slplog-ssd
 #$EB2/NoBuildItems/AL/Network/slpregtemplate.reg
-#$EB2/NoBuildItems/AL/Network/smb.conf
+$EB2/NoBuildItems/AL/Network/smb.conf
 #$EB2/NoBuildItems/AL/Network/smb.version.conf
 #$EB2/NoBuildItems/AL/Network/smb_print_share.conf
 #$EB2/NoBuildItems/AL/Network/smtp.conf
