@@ -851,7 +851,7 @@ $EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/TopAccess/Administration/Setup/ICCProfile/OutputMaintenance.html
 #$EB2/build/release/TopAccess/Administration/Setup/ICCProfile/RGBMaintenance.html
 #$EB2/build/release/TopAccess/Administration/Setup/InternetFax.html
-#$EB2/build/release/TopAccess/Administration/Setup/Network.html
+$EB2/build/release/TopAccess/Administration/Setup/Network.html
 #$EB2/build/release/TopAccess/Administration/Setup/NicInit.html
 #$EB2/build/release/TopAccess/Administration/Setup/OffDeviceCustArch.html
 #$EB2/build/release/TopAccess/Administration/Setup/PDLExportFile.html
@@ -907,7 +907,7 @@ $EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/TopAccess/Administration/Setup/setting/Rendevous.html
 #$EB2/build/release/TopAccess/Administration/Setup/setting/security.html
 #$EB2/build/release/TopAccess/Administration/Setup/setting/slpsession.html
-#$EB2/build/release/TopAccess/Administration/Setup/setting/smb.html
+$EB2/build/release/TopAccess/Administration/Setup/setting/smb.html
 #$EB2/build/release/TopAccess/Administration/Setup/setting/smtpclient.html
 #$EB2/build/release/TopAccess/Administration/Setup/setting/smtpserver.html
 #$EB2/build/release/TopAccess/Administration/Setup/setting/snmp.html
@@ -6837,7 +6837,7 @@ $EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/TopAccess/js/MenuSetting.js
 #$EB2/build/release/TopAccess/js/MetaScan.js
 #$EB2/build/release/TopAccess/js/MyAccountMap.js
-#$EB2/build/release/TopAccess/js/NetworkMap.js
+$EB2/build/release/TopAccess/js/NetworkMap.js
 #$EB2/build/release/TopAccess/js/NotifyMap.js
 #$EB2/build/release/TopAccess/js/OffDvcCustArchMap.js
 #$EB2/build/release/TopAccess/js/Overlap.js
@@ -6853,9 +6853,9 @@ $EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/TopAccess/js/SessionTimeoutHandler.js
 #$EB2/build/release/TopAccess/js/SortingTable.js
 #$EB2/build/release/TopAccess/js/SSFCMap.js
-#$EB2/build/release/TopAccess/js/Submit.js
+$EB2/build/release/TopAccess/js/Submit.js
 #$EB2/build/release/TopAccess/js/SystemUpdates.js
-#$EB2/build/release/TopAccess/js/TopAccessUtil.js
+$EB2/build/release/TopAccess/js/TopAccessUtil.js
 #$EB2/build/release/TopAccess/js/TotalCounter.js
 #$EB2/build/release/TopAccess/js/TotalCounterMap.js
 #$EB2/build/release/TopAccess/js/UserManager.js
@@ -7040,7 +7040,7 @@ $EB2/build/release/lib/alsmbNMO.so.0
 #$EB2/build/release/TopAccess/Registration/Template/TempPassEdit.html
 #$EB2/build/release/TopAccess/Registration/Template/TempPropList.html
 #$EB2/build/release/TopAccess/Registration/Template/USBSetting.html
-#$EB2/build/release/TopAccess/styles/style.css
+$EB2/build/release/TopAccess/styles/style.css
 #$EB2/build/release/TopAccess/SubMenu.html
 #$EB2/build/release/TopAccess/TA_CacheScript.sh
 #$EB2/build/release/TopAccess/TopAccessLogin.html
