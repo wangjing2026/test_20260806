@@ -1,0 +1,1654 @@
+<NSM>
+<!--Copyright 2010 TOSHIBA TEC CORPORATION All rights reserved-->
+<!--Current last startOderNo 41(AirPrint). When you add next NMO, you should use No 42.-->
+
+	<debugLevel>3</debugLevel>
+	<messagePort>39</messagePort>
+	<connectSSM>1</connectSSM>
+	<statusMonitorDelay>30</statusMonitorDelay>
+	<enabledXpath>enabled</enabledXpath>
+	<activeXpath>active</activeXpath>
+	<errorXpath>error</errorXpath>
+	<serviceStatusCheckRequired>1</serviceStatusCheckRequired>
+	<NMObjects>
+		<Generic>
+			<NMO>
+				<name>LPD</name>
+				<configFile>lprng.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/lpprinting start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/lpprinting stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/lpprinting restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/lpprinting status</statusCmd>
+				<serviceXpath>Services/LPD</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>22</startOrder>
+				<dependents>
+						<service>Bonjour</service>
+						<service>SLP</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PortNo</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>BannerPage</iniXpath>
+						<xpath>bannerEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>QueueName</iniXpath>
+						<xpath>queueName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>MaxConnection</iniXpath>
+						<xpath>maxConnection</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ActiveConnection</iniXpath>
+						<xpath>activeConnection</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Appletalk</name>
+				<configFile>netatalk.conf</configFile>
+				<startCmd>$EB2/bin/networkservice/atalk start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/atalk stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/atalk restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/atalk status</statusCmd>
+				<serviceXpath>Protocols/Appletalk</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>8</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>eth0ATALKNAME</iniXpath>
+						<xpath>deviceName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>eth0ZONE</iniXpath>
+						<xpath>zone</xpath>
+					</Map>
+					<Map>
+						<iniXpath>eth0ATALKENABLED</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ModelName</iniXpath>
+						<xpath>ModelName</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>PSMaxConnection</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>PSActiveConnection</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>IPX</name>
+				<configFile>ipx.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/ipx start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/ipx stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/ipx restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/ipx status</statusCmd>
+				<serviceXpath>Protocols/IPX-SPX</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>9</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+					<service>SNMP</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>if0_ENABLED</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>if0_FRAME_TYPE</iniXpath>
+					<xpath>frameType</xpath>
+					</Map>
+					<Map>
+						<iniXpath>if1_ENABLED</iniXpath>
+						<xpath>Wireless/enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>if1_FRAME_TYPE</iniXpath>
+						<xpath>Wireless/frameType</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Hp9100</name>
+				<configFile>hp9100.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/hpprinting start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/hpprinting stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/hpprinting restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/hpprinting status</statusCmd>
+				<serviceXpath>Services/HPJetDirect</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>27</startOrder>
+				<dependents>
+					<service>Bonjour</service>
+					<service>SLP</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PortNo</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>BidirectionOn</iniXpath>
+						<xpath>bidiEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>MaxConnection</iniXpath>
+						<xpath>maxConnection</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ActiveConnection</iniXpath>
+						<xpath>activeConnection</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>NetWarePrint</name>
+				<configFile>nwprint.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/nwprinting start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/nwprinting stop</stopCmd>
+				<statusCmd>$EB2/bin/networkservice/nwprinting status</statusCmd>
+				<reloadCmd>$EB2/bin/networkservice/nwprinting restart</reloadCmd>
+				<serviceXpath>Services/NetWare</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>20</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>context</iniXpath>
+						<xpath>context</xpath>
+					</Map>
+					<Map>
+						<iniXpath>tree</iniXpath>
+						<xpath>tree</xpath>
+					</Map>
+					<Map>
+						<iniXpath>advt_name</iniXpath>
+						<xpath>advt_name</xpath>
+					</Map>
+					<Map>
+						<iniXpath>printer_num</iniXpath>
+						<xpath>printerNumber</xpath>
+					</Map>
+					<Map>
+						<iniXpath>mode</iniXpath>
+						<xpath>mode</xpath>
+					</Map>
+					<Map>
+						<iniXpath>poll_rate</iniXpath>
+						<xpath>queueScanRate</xpath>
+					</Map>
+					<Map>
+						<iniXpath>server</iniXpath>
+						<xpath>fileServerName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>server</iniXpath>
+						<xpath>searchRoot</xpath>
+					</Map>
+					<Map>
+						<iniXpath>bindery</iniXpath>
+						<xpath>Environment/bindery</xpath>
+					</Map>
+					<Map>
+						<iniXpath>NDS</iniXpath>
+						<xpath>Environment/NDS</xpath>
+					</Map>
+					<Map>
+						<iniXpath>name</iniXpath>
+						<xpath>loginName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>password</iniXpath>
+						<xpath>password</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>SMTPClient</name>
+				<configFile>smtp.conf</configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Protocols/SMTP/Client</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>11</startOrder>
+				<dependents>
+					<service>Krb</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>SMTP_CLIENT_ENABLED</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER</iniXpath>
+						<xpath>server</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_PORT</iniXpath>
+						<xpath>port</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_DOMAIN</iniXpath>
+						<xpath>domain</xpath>
+					</Map>
+					<Map>
+						<!--iniXpath>CNTL_SMTP_USER</iniXpath-->
+						<xpath>Authentication/userName</xpath>
+					</Map>
+					<Map>
+						<!--iniXpath>CNTL_SMTP_PASSWORD</iniXpath-->
+						<xpath>Authentication/password</xpath>
+					</Map>
+					<Map>
+						<iniXpath>AUTHENTICATION</iniXpath>
+						<xpath>Authentication/desiredType</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_CLIENT_POPBEFORESMTP</iniXpath>
+						<xpath>popBeforeSMTP</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_CLIENT_ENABLESSL</iniXpath>
+						<xpath>enableSSL</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_CLIENT_MAXSIZE</iniXpath>
+						<xpath>maxSize</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_CLIENT_SSLPROTO</iniXpath>
+						<xpath>sslProtocol</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_CLIENT_CONNECTION_TIMEOUT</iniXpath>
+						<xpath>connectionTimeOut</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>SMTPServer</name>
+				<configFile>smtp.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/sendmail start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/sendmail stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/sendmail restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/sendmail status</statusCmd>
+				<serviceXpath>Protocols/SMTP/Server</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>12</startOrder>
+				<dependents>
+					<service>Krb</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>SMTP_SERVER_ENABLED</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_PORT</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_EMAIL</iniXpath>
+						<xpath>emailAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_OFFRAMP_GW</iniXpath>
+						<xpath>OffRamp/gwEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_OFFRAMP_SECURITY</iniXpath>
+						<xpath>OffRamp/securityEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_OFFRAMP_PRINT</iniXpath>
+						<xpath>OffRamp/printEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SMTP_SERVER_EFI_IPADDRESS</iniXpath>
+						<xpath>EFIIPAddress</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>DPWS</name>
+				<configFile>dpws.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/dpws start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/dpws stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/dpws restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/dpws status</statusCmd>
+				<serviceXpath>Protocols/DPWS</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<PostSettingAction action="NoRestart"></PostSettingAction>
+				<startOrder>13</startOrder>
+				<dependents>
+					<service>SLP</service>
+					<!--service>PowerManagement</service-->
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Generic/enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Generic/SSLEnabled</iniXpath>
+						<xpath>SSLEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Generic/mode</iniXpath>
+						<xpath>mode</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Discovery/multicastIP</iniXpath>
+						<xpath>multicastIP</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Discovery/discoveryPort</iniXpath>
+						<xpath>discoveryPort</xpath>
+					</Map>
+					<Map>
+						<iniXpath>MetadataExchange/metadataXIP</iniXpath>
+						<xpath>metadataXIP</xpath>
+					</Map>
+					<Map>
+						<iniXpath>MetadataExchange/metaDataXPort</iniXpath>
+						<xpath>metaDataXPort</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PrintService/printServiceIP</iniXpath>
+						<xpath>printServiceIP</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PrintService/printServicePort</iniXpath>
+						<xpath>printServicePort</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ScanService/scanServiceIP</iniXpath>
+						<xpath>scanServiceIP</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ScanService/scanServicePort</iniXpath>
+						<xpath>scanServicePort</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Generic/friendlyName</iniXpath>
+						<xpath>friendlyName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PrintService/printEnabled</iniXpath>
+						<xpath>printServiceStatus</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>printerName</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>printerInformation</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ScanService/scanEnabled</iniXpath>
+						<xpath>scanServiceStatus</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>scannerName</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>scannerInformation</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ScanService/wiaScanDriverType</iniXpath>
+						<xpath>wiaScanDriverType</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>JobExecutionMode</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>maxConnections</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>activeConnection</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>PrintEventRate</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>discoveryProxyIP</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>discoveryAppSeaquenceID</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>scannerLogService</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>POP3</name>
+				<configFile>smtp.conf</configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Protocols/POP3</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>14</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+					<service>Krb</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>POP3_ENABLED</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_SERVER</iniXpath>
+						<xpath>server</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_PORT</iniXpath>
+						<xpath>port</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_POLLING_RATE</iniXpath>
+						<xpath>pollingRate</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_SSL_ENABLED</iniXpath>
+						<xpath>SSLEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_SSL_PORT</iniXpath>
+						<xpath>SSLPortNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_CLIENT_CONNECTION_TIMEOUT</iniXpath>
+						<xpath>connectionTimeOut</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_LOGIN_TYPE</iniXpath>
+						<xpath>Authentication/loginType</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_USER</iniXpath>
+						<xpath>Authentication/userName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_PASSWORD</iniXpath>
+						<xpath>Authentication/password</xpath>
+					</Map>
+					<Map>
+						<iniXpath>POP3_AUTH_TYPE</iniXpath>
+						<xpath>Authentication/authType</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO proxyNMO="1">
+				<name>Bluetooth</name>
+				<configFile></configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/bluetooth start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/bluetooth stop</stopCmd>
+				<!--reloadCmd>$EB2/bin/networkservice/bluetooth restart</reloadCmd-->
+				<statusCmd>$EB2/bin/networkservice/bluetooth status</statusCmd>
+				<serviceXpath>Adapters/Bluetooth</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>15</startOrder>
+				<dependents></dependents>
+			</NMO>
+			<NMO>
+				<name>LLTD</name>
+				<configFile>lld2d.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/lltd start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/lltd stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/lltd restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/lltd status</statusCmd>
+				<serviceXpath>Services/LLTD</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>16</startOrder>
+				<dependents>
+					<!--service>PowerManagement</service-->
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>DeviceName</iniXpath>
+						<xpath>deviceName</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>USBPrinting</name>
+				<configFile fileFormat="Shell">usbprn.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/usbprinting start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/usbprinting stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/usbprinting restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/usbprinting status</statusCmd>
+				<serviceXpath>Services/USBDirectPrintServer</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>17</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>LDAPSession</name>
+				<configFile fileFormat="Shell">ldapsession.conf</configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Services/LDAP</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>18</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SSLEnabled</iniXpath>
+						<xpath>SSLEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Attribute1</iniXpath>
+						<xpath>attribute1</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Attribute2</iniXpath>
+						<xpath>attribute2</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SearchMethod</iniXpath>
+						<xpath>searchMethod</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>connectionTimeOut</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>FTPClient</name>
+				<configFile>FTPClient.conf</configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Protocols/FTPClient</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>23</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>FTP_CLIENT_FORCED_SSL</iniXpath>
+						<xpath>ForcedSSLSetting</xpath>
+					</Map>
+					<Map>
+						<iniXpath>FTP_CLIENT_SSL_SETTING</iniXpath>
+						<xpath>SSLSetting</xpath>
+					</Map>
+					<Map>
+						<iniXpath>FTP_CLIENT_PORT</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>FTP_CLIENT_CONNECTION_TIMEOUT</iniXpath>
+						<xpath>ConnectionTimeout</xpath>
+					</Map>
+					<Map>
+						<iniXpath>FTP_CLIENT_MODE</iniXpath>
+						<xpath>Mode</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO proxyNMO="1">
+				<name>EmailPrinting</name>
+				<serviceXpath>Services/EmailPrint</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>19</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<!-- temporarily disabled, because there is no IPv6 kernel support in K2 -->
+			<NMO>
+				<name>LLMNR</name>
+				<configFile>llmnr.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/llmnr start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/llmnr stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/llmnr restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/llmnr status</statusCmd>
+				<serviceXpath>Services/LLMNR</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>10</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>Enable</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Telnet</name>
+				<configFile>telnet.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/telnet start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/telnet stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/telnet restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/telnet status</statusCmd>
+				<serviceXpath>Services/Telnet</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>32</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>UserName</iniXpath>
+						<xpath>Username</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PassWord</iniXpath>
+						<xpath>Password</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PortNo</iniXpath>
+						<xpath>Port</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO proxyNMO="1">
+				<name>Stage2</name>
+				<configFile></configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/stage2 start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/stage2 stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/stage2 restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/stage2 status</statusCmd>
+				<serviceXpath>Services/Stage2</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>37</startOrder>
+				<dependents></dependents>
+			</NMO>
+			<NMO proxyNMO="1">
+				<name>Firewall</name>
+				<configFile></configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/firewall start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/firewall stop</stopCmd>
+				<statusCmd>$EB2/bin/networkservice/firewall status</statusCmd>
+				<serviceXpath>Services/Firewall</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>1</startOrder>
+				<dependents></dependents>
+			</NMO>
+			<NMO>
+				<name>FTPPrint</name>
+				<configFile>FTPPrint.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/FTPPrint start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/FTPPrint stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/FTPPrint restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/FTPPrint status</statusCmd>
+				<serviceXpath>Services/FTPPrintServer</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>24</startOrder>
+				<dependents>
+					<service>SLP</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PortNo</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>UserName</iniXpath>
+						<xpath>loginName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Password</iniXpath>
+						<xpath>password</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO proxyNMO="1">
+				<name>AirPrint</name>
+				<configFile></configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Services/AirPrint</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>41</startOrder>
+				<dependents>
+					<service>Bonjour</service>
+					<service>IPP</service>
+				</dependents>
+			</NMO>
+		</Generic>
+		<NonGeneric>
+			<NMO>
+				<name>RemoteApplications</name>
+				<configFile>remoteapplication.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/remoteApplication start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/remoteApplication stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/remoteApplication restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/remoteApplication status</statusCmd>
+				<serviceXpath>Services/RemoteApplications</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>7</startOrder>
+				<dependents></dependents>
+				<TranslationMap></TranslationMap>
+			</NMO>
+			<NMO>
+				<name>IPV6</name>
+				<configFile>ipv6.conf</configFile>
+				<startCmd>$EB2/bin/networkservice/network-ipv6 start eth0</startCmd>
+				<stopCmd>$EB2/bin/networkservice/network-ipv6 stop eth0</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/network-ipv6 restart eth0</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/network-ipv6 status eth0</statusCmd>
+				<serviceXpath>Protocols/IPV6</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>5</startOrder>
+				<dependents>
+					<service>IPSec</service>
+					<service>IPX</service>
+					<service>SNMP</service>
+					<service>Samba</service>
+					<service>DNS</service>
+					<service>DDNS</service>
+					<service>Krb</service>
+					<service>SLP</service>
+					<service>SMTPServer</service>
+					<service>LLMNR</service>
+					<service>Appletalk</service>
+					<!--service>IPP</service-->
+					<service>Bonjour</service>
+					<service>DPWS</service>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>IPV6INIT</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+					<!--values : Manual, Stateless, Stateful-->
+						<iniXpath>BOOTIPV6</iniXpath>
+						<xpath>addressMode</xpath>
+					</Map>
+					<Map>
+						<!--Link local IPV6 address-->
+						<iniXpath>LINKLOCALV6</iniXpath>
+						<xpath>linkLocalAddress</xpath>
+					</Map>
+					<Map>
+						<!--Manual IPV6 Address-->
+						<iniXpath>MANV6ADDR</iniXpath>
+						<xpath>Manual/IPAddress/ipAddress</xpath>
+					</Map>
+					<Map>
+						<!--Manual address prefix length-->
+						<iniXpath>MANPRELEN</iniXpath>
+						<xpath>Manual/IPAddress/prefix</xpath>
+					</Map>
+					<Map>
+						<!--Manual address gateway-->
+						<iniXpath>MANGWV6</iniXpath>
+						<xpath>Manual/IPAddress/gateway</xpath>
+					</Map>
+					<Map>
+						<!--Manual Options flag-->
+						<iniXpath>MANOFLAG</iniXpath>
+						<xpath>Manual/useDHCPV6Options</xpath>
+					</Map>
+					<Map>
+						<!--Stateless DHCPV6 address flag-->
+						<iniXpath>SLMFLAG</iniXpath>
+						<xpath>Stateless/useDHCPV6IPAddress</xpath>
+					</Map>
+					<Map>
+						<!--Stateless DHCPV6 options flag-->
+						<iniXpath>SLOFLAG</iniXpath>
+						<xpath>Stateless/useDHCPV6Options/enable</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLFQDN_ENABLE</iniXpath>
+						<xpath>Stateless/useDHCPV6Options/fqdnOptionFlag/enable</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLFQDN_UPDMETHOD</iniXpath>
+						<xpath>Stateless/useDHCPV6Options/fqdnOptionFlag/updateMethod</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_1</iniXpath>
+						<xpath>Stateless/IPAddress[@index='1']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_1</iniXpath>
+						<xpath>Stateless/IPAddress[@index='1']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_1</iniXpath>
+						<xpath>Stateless/IPAddress[@index='1']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_2</iniXpath>
+						<xpath>Stateless/IPAddress[@index='2']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_2</iniXpath>
+						<xpath>Stateless/IPAddress[@index='2']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_2</iniXpath>
+						<xpath>Stateless/IPAddress[@index='2']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_3</iniXpath>
+						<xpath>Stateless/IPAddress[@index='3']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_3</iniXpath>
+						<xpath>Stateless/IPAddress[@index='3']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_3</iniXpath>
+						<xpath>Stateless/IPAddress[@index='3']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_4</iniXpath>
+						<xpath>Stateless/IPAddress[@index='4']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_4</iniXpath>
+						<xpath>Stateless/IPAddress[@index='4']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_4</iniXpath>
+						<xpath>Stateless/IPAddress[@index='4']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_5</iniXpath>
+						<xpath>Stateless/IPAddress[@index='5']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_5</iniXpath>
+						<xpath>Stateless/IPAddress[@index='5']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_5</iniXpath>
+						<xpath>Stateless/IPAddress[@index='5']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_6</iniXpath>
+						<xpath>Stateless/IPAddress[@index='6']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_6</iniXpath>
+						<xpath>Stateless/IPAddress[@index='6']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_6</iniXpath>
+						<xpath>Stateless/IPAddress[@index='6']/gateway</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLIPV6ADDR_7</iniXpath>
+						<xpath>Stateless/IPAddress[@index='7']/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLPRELENV6_7</iniXpath>
+						<xpath>Stateless/IPAddress[@index='7']/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SLGWV6_7</iniXpath>
+						<xpath>Stateless/IPAddress[@index='7']/gateway</xpath>
+					</Map>
+					<Map>
+						<!--Statefull DHCPV6 address flag-->
+						<iniXpath>SFMFLAG</iniXpath>
+						<xpath>Stateful/useDHCPV6IPAddress</xpath>
+					</Map>
+					<Map>
+						<!--Statefull DHCPV6 options flag-->
+						<iniXpath>SFOFLAG</iniXpath>
+						<xpath>Stateful/useDHCPV6Options/enable</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SFFQDN_ENABLE</iniXpath>
+						<xpath>Stateful/useDHCPV6Options/fqdnOptionFlag/enable</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SFFQDN_UPDMETHOD</iniXpath>
+						<xpath>Stateful/useDHCPV6Options/fqdnOptionFlag/updateMethod</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SFIPV6ADDR</iniXpath>
+						<xpath>Stateful/IPAddress/ipAddress</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SFPRELENV6</iniXpath>
+						<xpath>Stateful/IPAddress/prefix</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SFGWV6</iniXpath>
+						<xpath>Stateful/IPAddress/gateway</xpath>
+					</Map>
+					<Map>
+						<!--Primary IPV6 DNS server-->
+						<iniXpath>PRIDNSSERVER</iniXpath>
+						<xpath>primaryDNSIP</xpath>
+					</Map>
+					<Map>
+						<!--Secondary IPV6 DNS server-->
+						<iniXpath>SECDNSSERVER</iniXpath>
+						<xpath>secondaryDNSIP</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>TCPIP</name>
+				<configFile></configFile>
+				<!--pass interface name as second argument to the start,stop and status script-->
+				<startCmd>$EB2/bin/networkservice/network start eth0</startCmd>
+				<stopCmd>$EB2/bin/networkservice/network stop eth0</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/network restart eth0</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/network status eth0</statusCmd>
+				<reloadCmd></reloadCmd>
+				<serviceXpath>Protocols/TCP-IP</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>6</startOrder>
+				<dependents>
+					<service>IPSec</service>
+					<service>IPX</service>
+					<service>DNS</service>
+					<service>DDNS</service>
+					<service>Samba</service>
+					<service>Krb</service>
+					<service>SLP</service>
+					<service>Appletalk</service>
+					<service>DPWS</service>
+					<service>IPP</service>
+					<service>Bonjour</service>
+					<!--service>PowerManagement</service-->
+				</dependents>
+				<TranslationMap>
+                		<Map>
+					<iniXpath>DEVICE</iniXpath>
+					<xpath>device</xpath>
+				</Map>
+				<Map>
+					<iniXpath>ENABLED</iniXpath>
+					<xpath>enabled</xpath>
+				</Map>
+				<Map>
+					<iniXpath>HOSTNAME</iniXpath>
+					<xpath>hostName</xpath>
+				</Map>
+				<Map>
+					<iniXpath>IPADDR</iniXpath>
+					<xpath>ip</xpath>
+				</Map>
+				<Map>
+					<iniXpath>GATEWAY</iniXpath>
+					<xpath>gw</xpath>
+				</Map>
+				<Map>
+					<iniXpath>NETMASK</iniXpath>
+					<xpath>subnet</xpath>
+				</Map>
+				<Map>
+					<iniXpath>BOOTPROTO</iniXpath>
+					<xpath>addressMode</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_WINS_SERVER</iniXpath>
+					<xpath>DHCP/autoWINSUpdate</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_DNS_SERVER</iniXpath>
+					<xpath>DHCP/autoDNSUpdate</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_DDNS_SERVER</iniXpath>
+					<xpath>DHCP/autoDDNSUpdate</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_SMTP_SERVER</iniXpath>
+					<xpath>DHCP/autoSMTPUpdate</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_POP3_SERVER</iniXpath>
+					<xpath>DHCP/autoPOP3Update</xpath>
+				</Map>
+				<Map>
+					<iniXpath>AUTO_UPDATE_SNTP_SERVER</iniXpath>
+					<xpath>DHCP/autoSNTPUpdate</xpath>
+				</Map>
+		  <!--Parameter used to enable or disable ipconflict detection-->
+				<Map>
+					 <iniXpath>ENABLEIPCONFLICTDETECT</iniXpath>
+					 <xpath>enableIPConflictDetect</xpath>
+				</Map>
+				<!--<Map>
+					<iniXpath>AUTO_UPDATE_DOMAINNAME</iniXpath>
+					<xpath>DHCP/autoDomainNameUpdate</xpath>
+				</Map>-->
+                		<Map>
+					 <iniXpath>MTU</iniXpath>
+					 <xpath>mtuSize</xpath>
+				</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>DDNS</name>
+				<configFile>ddns.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/ddnsservice-script enable</startCmd>
+				<stopCmd runBackground="1">$EB2/bin/networkservice/ddnsservice-script disable</stopCmd>
+				<reloadCmd runBackground="1">$EB2/bin/networkservice/ddnsservice-script restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/ddnsservice-script status</statusCmd>
+				<serviceXpath>Protocols/DDNS</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>30</startOrder>
+				<dependents>
+					<service>Krb</service>
+					<service>SMTPServer</service>
+					<service>IPP</service>
+					<service>Samba</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>domain_name</iniXpath>
+						<xpath>domainName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>primary_login_name</iniXpath>
+						<xpath>primaryLoginName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>secondary_login_name</iniXpath>
+						<xpath>secondaryLoginName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>primary_password</iniXpath>
+						<xpath>primaryPassword</xpath>
+					</Map>
+					<Map>
+						<iniXpath>secondary_password</iniXpath>
+						<xpath>secondaryPassword</xpath>
+					</Map>
+					<Map>
+						<iniXpath>security_method</iniXpath>
+						<xpath>securityMethod</xpath>
+					</Map>
+					<Map>
+						<iniXpath>sdns_key_file</iniXpath>
+						<xpath>sdnsKeyFile</xpath>
+					</Map>
+					<Map>
+						<iniXpath>sdns_private_key_file</iniXpath>
+						<xpath>sdnsPrivateKeyFile</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ddns_timeout_value</iniXpath>
+						<xpath>ddnsTimeoutValue</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>FTPServer</name>
+				<configFile>FTPPrint.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/FTPServer start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/FTPServer stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/FTPServer restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/FTPServer status</statusCmd>
+				<serviceXpath>Services/FTPServer</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>25</startOrder>
+				<dependents>
+					<service>SLP</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>ftpserverenabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>PortNo</iniXpath>
+						<xpath>portNo</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SSLEnabled</iniXpath>
+						<xpath>SSLEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>SSLPortNo</iniXpath>
+						<xpath>SSLPortNo</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>IPP</name>
+				<configFile>cupsd.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/ipprinting start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/ipprinting stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/ipprinting restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/ipprinting status</statusCmd>
+				<serviceXpath>Services/IPP</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>39</startOrder>
+				<dependents>
+					<!--service>Webserver</service-->
+					<service>Bonjour</service>
+					<service>SLP</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>EBR</name>
+				<configFile></configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/eBR start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/eBR stop</stopCmd>
+				<statusCmd>$EB2/bin/networkservice/eBR status</statusCmd>
+				<reloadCmd>$EB2/bin/networkservice/eBR restart</reloadCmd>
+				<serviceXpath>Services/eBR</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>36</startOrder>
+				<dependents></dependents>
+				<TranslationMap></TranslationMap>
+			</NMO>
+			<NMO>
+				<!-- the ~ in some keys are intentional, please dont remove that-->
+				<name>Samba</name>
+				<configFile>smb.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/smb start</startCmd>
+					<startCmdArguments>
+						<Argument>
+							<cmdLineOption>-l</cmdLineOption>
+							<value type="xpath">enableAuthLogin</value>
+						</Argument>
+						<Argument>
+							<cmdLineOption>-u</cmdLineOption>
+							<value type="xpath">logonUser</value>
+						</Argument>
+						<Argument>
+							<cmdLineOption>-p</cmdLineOption>
+							<value type="xpath">password</value>
+						</Argument>
+						<Argument>
+							<cmdLineOption>-v</cmdLineOption>
+							<value type="xpath">inetProtocol</value>
+						</Argument>
+					</startCmdArguments>
+				<stopCmd>$EB2/bin/networkservice/smb stop</stopCmd>
+					<stopCmdArguments>
+						<Argument>
+							<!-- Domain login flag-->
+							<cmdLineOption>-l</cmdLineOption>
+							<value type="xpath">enableAuthLogin</value>
+						</Argument>
+						<Argument>
+							<!-- admin user argument-->
+							<cmdLineOption>-u</cmdLineOption>
+							<value type="xpath">logonUser</value>
+						</Argument>
+						<Argument>
+							<!-- password argument -->
+							<cmdLineOption>-p</cmdLineOption>
+							<value type="xpath">password</value>
+						</Argument>
+			  			<!-- protocol version IPV4/IPV6-->
+						<Argument>
+							<cmdLineOption>-v</cmdLineOption>
+							<value type="xpath">inetProtocol</value>
+						</Argument>
+				</stopCmdArguments>
+				<reloadCmd>$EB2/bin/networkservice/smb restart</reloadCmd>
+                   <restartCmdArguments>
+                          <Argument>
+                              <cmdLineOption>-l</cmdLineOption>
+                              <value type="xpath">enableAuthLogin</value>
+                          </Argument>
+                          <Argument>
+                               <cmdLineOption>-u</cmdLineOption>
+                               <value type="xpath">logonUser</value>
+                          </Argument>
+                          <Argument>
+                               <cmdLineOption>-p</cmdLineOption>
+                               <value type="xpath">password</value>
+                          </Argument>
+                          <Argument>
+                              <cmdLineOption>-v</cmdLineOption>
+                              <value type="xpath">inetProtocol</value>
+                           </Argument>
+                   </restartCmdArguments>
+				<statusCmd>$EB2/bin/networkservice/smb status</statusCmd>
+				<serviceXpath>Protocols/SMB</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>26</startOrder>
+				<dependents>
+					<service>SLP</service>
+					<service>LLMNR</service>
+					<service>Krb</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>global/netbios~name</iniXpath>
+						<xpath>deviceName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/workgroup</iniXpath>
+						<xpath>domainName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/workgroup</iniXpath>
+						<xpath>groupName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/wins~server</iniXpath>
+						<xpath>wins</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/wins~server</iniXpath>
+						<xpath>wins2</xpath>
+					</Map>
+					<Map>
+						<iniXpath>Print/available</iniXpath>
+						<xpath>printingEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>FILE_SHARE/available</iniXpath>
+						<xpath>fileshareEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/server~signing</iniXpath>
+						<xpath>digitalSigningSMBServer</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/client~signing</iniXpath>
+						<xpath>digitalSigningSMBClient</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/password~server</iniXpath>
+						<xpath>primaryDomainController</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/password~server</iniXpath>
+						<xpath>backupDomainController</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>logonUser</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>password</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>enableDomainLogin</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/DeviceAuthTimeout</iniXpath>
+						<xpath>deviceAuthTimeout</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>userAuthTimeout</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>winDomainAuthMethod</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>clientAuthMethod</xpath>
+					</Map>	
+					<Map>
+                                                <iniXpath>FILE_SHARE/max~connections</iniXpath>
+						<xpath>maxConnection</xpath>
+					</Map>
+			                <Map>
+						<iniXpath>global/hostAnnouncementSSL</iniXpath>
+						<xpath>hostAnnouncementSSL</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/server~max~protocol</iniXpath>
+						<xpath>serverProtocol</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/client~max~protocol</iniXpath>
+						<xpath>clientProtocol</xpath>
+					</Map>
+					<Map>
+						<iniXpath>global/sambaCliConnectionTimeout</iniXpath>
+						<xpath>clientConnectionTimeout</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>serverAuthGuestLogon</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+					<xpath>serverAuthUser</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>serverAuthPassword</xpath>
+					</Map>
+
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Xsupplicant</name>
+				<configFile>xsupplicant.conf</configFile>
+				<startCmd>$EB2/bin/networkservice/xsupplicant start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/xsupplicant stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/xsupplicant restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/xsupplicant status</statusCmd>
+				<serviceXpath>Protocols/Xsupplicant</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>2</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Wireless</name>
+				<configFile>wireless.conf</configFile>
+				<startCmd>$EB2/bin/networkservice/wireless start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/wireless stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/wireless restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/wireless status</statusCmd>
+				<serviceXpath>Adapters/Wireless</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>0</startOrder>
+				<dependents>
+					<service>IPSec</service>
+					<service>Networkadapter</service>
+					<service>TCPIP</service>
+					<service>IPX</service>
+					<service>Appletalk</service>
+					<service>DNS</service>
+					<service>DDNS</service>
+					<service>DPWS</service>
+					<service>Bonjour</service>
+				</dependents>
+				<TranslationMap></TranslationMap>
+			</NMO>
+			<NMO>
+				<name>SNMP</name>
+				<configFile>snmpd.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/snmp start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/snmp stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/snmp restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/snmp status</statusCmd>
+				<serviceXpath>Protocols/SNMP</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>28</startOrder>
+				<dependents>
+					<!--service>PowerManagement</service-->
+					<service>Samba</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Webserver</name>
+				<configFile>httpnmo.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/webserver start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/webserver stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/webserver restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/webserver status</statusCmd>
+				<serviceXpath>Services/HTTPServer</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>38</startOrder>
+				<dependents>
+					<service>Bonjour</service>
+					<service>RemoteApplications</service>
+					<service>DPWS</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>IPSec</name>
+				<configFile>IPSec.xml</configFile>
+				<startCmd>$EB2/bin/networkservice/ipsec start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/ipsec stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/ipsec restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/ipsec status</statusCmd>
+				<serviceXpath>Protocols/IPSec</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>3</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Krb</name>
+				<configFile>krb5.conf</configFile>
+				<serviceXpath>Protocols/Krb</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>31</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>DirectoryService</name>
+				<configFile></configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Services/DirectoryServices</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>21</startOrder>
+				<dependents>
+					<service>Krb</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Networkadapter</name>
+				<configFile></configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Adapters/Wire</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>4</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>Bonjour</name>
+				<configFile>bonjour.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/bonjour start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/bonjour stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/bonjour restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/bonjour status</statusCmd>
+				<serviceXpath>Services/Bonjour</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>40</startOrder>
+				<dependents>
+					<service>PowerManagement</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>HostName</iniXpath>
+						<xpath>hostName</xpath>
+					</Map>
+					<Map>
+						<iniXpath>OperationStatus</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>ServiceName</iniXpath>
+						<xpath>serviceName</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>priorityRow</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>priorityIPP</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>priorityLPD</xpath>
+					</Map>
+					<Map>
+						<iniXpath></iniXpath>
+						<xpath>priorityHttp</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>SLP</name>
+				<configFile>slp.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/slp start</startCmd>
+				<stopCmd>$EB2/bin/networkservice/slp stop</stopCmd>
+				<reloadCmd>$EB2/bin/networkservice/slp restart</reloadCmd>
+				<statusCmd>$EB2/bin/networkservice/slp status</statusCmd>
+				<serviceXpath>Protocols/SLP</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>34</startOrder>
+				<dependents>
+					<!--service>PowerManagement</service-->
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>net.slp.useScopes</iniXpath>
+						<xpath>scope</xpath>
+					</Map>
+					<Map>
+						<iniXpath>net.slp.multicastTTL</iniXpath>
+						<xpath>ttl</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>PingTraceroute</name>
+				<configFile></configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Services/PingTrace</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>35</startOrder>
+				<dependents></dependents>
+				<TranslationMap>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>DNS</name>
+				<configFile>dns.conf</configFile>
+				<startCmd runBackground="1">$EB2/bin/networkservice/dnsservice-script enable</startCmd>
+				<stopCmd runBackground="1">$EB2/bin/networkservice/dnsservice-script disable</stopCmd>
+				<reloadCmd runBackground="1">$EB2/bin/networkservice/dnsservice-script restart</reloadCmd>
+				<statusCmd runBackground="1">$EB2/bin/networkservice/dnsservice-script status</statusCmd>
+				<serviceXpath>Protocols/DNS</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>29</startOrder>
+				<dependents>
+					<service>DDNS</service>
+					<service>Krb</service>
+					<service>SMTPServer</service>
+					<service>Samba</service>
+				</dependents>
+				<TranslationMap>
+					<Map>
+						<iniXpath>enabled</iniXpath>
+						<xpath>enabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>primary_dns_server</iniXpath>
+						<xpath>primaryServer</xpath>
+					</Map>
+					<Map>
+						<iniXpath>secondary_dns_server</iniXpath>
+						<xpath>secondaryServer</xpath>
+					</Map>
+					<Map>
+						<iniXpath>dns_timeout_value</iniXpath>
+						<xpath>dnsTimeoutValue</xpath>
+					</Map>
+					<Map>
+						<iniXpath>dns_validation_enabled</iniXpath>
+						<xpath>dnsValidationEnabled</xpath>
+					</Map>
+					<Map>
+						<iniXpath>dns_validation_interval</iniXpath>
+						<xpath>dnsValidationInterval</xpath>
+					</Map>
+				</TranslationMap>
+			</NMO>
+			<NMO>
+				<name>PowerManagement</name>
+				<configFile></configFile>
+				<startCmd></startCmd>
+				<stopCmd></stopCmd>
+				<statusCmd></statusCmd>
+				<serviceXpath>Services/PowerManagement</serviceXpath>
+				<connectSSM>0</connectSSM>
+				<startOrder>33</startOrder>
+				<dependents></dependents>
+			</NMO>
+		</NonGeneric>
+	</NMObjects>
+</NSM>

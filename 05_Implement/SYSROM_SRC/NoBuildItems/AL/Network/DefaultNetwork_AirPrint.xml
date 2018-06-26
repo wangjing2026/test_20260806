@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2010 TOSHIBA TEC CORPORATION All rights reserved -->
+<Network>
+	<Information>
+		<version>1015.01</version>
+	</Information>
+	<Services>
+		<NetWare>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<mode>PSERVER</mode>
+			<printerNumber>0</printerNumber>
+			<context clone="1" notification="1"></context>
+			<tree clone="1" notification="1"></tree>
+			<advertizedName></advertizedName>
+			<fileServerName></fileServerName>
+			<fileServerNames>
+				<fileServerName index="0"></fileServerName>
+				<fileServerName index="1"></fileServerName>
+				<fileServerName index="2"></fileServerName>
+				<fileServerName index="3"></fileServerName>
+			</fileServerNames>
+			<serverDiscovery>Auto</serverDiscovery>
+			<loginName clone="1" notification="1" restriction="#;=\" length="47"></loginName>
+			<password  clone="1" encryption = "1" notification="1"></password>
+			<searchRoot clone="1" notification="1"></searchRoot>
+			<queueScanRate clone="1" notification="1" min="1" max="255">30</queueScanRate>
+			<ndsEnabled>1</ndsEnabled>
+                        <queueName></queueName>
+			<queueNames>
+				<queueName index="0"></queueName>
+				<queueName index="1"></queueName>
+				<queueName index="2"></queueName>
+				<queueName index="3"></queueName>
+			</queueNames>
+			<queueState></queueState>
+			<queuePriority>0</queuePriority>
+			<printServerEnabled>1</printServerEnabled>
+			<fileServerPortNumber>0</fileServerPortNumber>
+			<Environment>
+				<NDS clone="1" notification="1">1</NDS>
+				<bindery clone="1" notification="1">1</bindery>
+			</Environment>
+			<advt_name></advt_name>
+		</NetWare>
+		<LPD>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<portNo clone="1" notification="1" min="1" max="65535">515</portNo>
+			<bannerEnabled clone="1" notification="1">0</bannerEnabled>
+			<queueName>Print</queueName>
+			<maxConnection>10</maxConnection>
+			<activeConnection>10</activeConnection>
+		</LPD>
+		<HPJetDirect>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Connections>
+				<connection></connection>
+				<connection></connection>
+			</Connections>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<portNo clone="1" notification="1" min="1024" max="32767">9100</portNo>
+			<bidiEnabled clone="1" notification="1">0</bidiEnabled>
+			<maxConnection>10</maxConnection>
+			<activeConnection>10</activeConnection>
+		</HPJetDirect>
+		<FTPPrintServer>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<portNo clone="1" notification="1">21</portNo>
+			<loginName clone="1" NullSetDefaultValue="Print" notification="1" restriction="#;=\" length="31">Print</loginName>
+			<password  clone="1" encryption = "1" notification="1"></password>
+		</FTPPrintServer>
+		<IPP>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<portNo clone="1" notification="1">631</portNo>
+			<port80Enabled clone="1" notification="1">0</port80Enabled>
+			<authenticationMethod clone="1" notification="1">None</authenticationMethod>
+			<userName clone="1" notification="1"></userName>
+			<userPassword clone="1" notification="1"></userPassword>
+			<enableSSL clone="1" notification="1">0</enableSSL>
+			<sslPortNo clone="1" notification="1">443</sslPortNo>
+			<url></url>
+			<sslUrl></sslUrl>
+			<authenticationFromLDAP>2</authenticationFromLDAP>
+			<maxConnection>16</maxConnection>
+			<activeConnection>10</activeConnection>
+			<queueName>Print</queueName>
+			<PrintName notification="1"></PrintName>
+			<PrintLocation></PrintLocation>
+			<PrintInfo></PrintInfo>
+			<PrintMoreInfo>http://www.toshibatec.co.jp/worldwide/</PrintMoreInfo>
+			<PrintDriverInstaller></PrintDriverInstaller>
+			<PrintMakeandModel></PrintMakeandModel>
+			<PrintMoreInfoMfgr></PrintMoreInfoMfgr>
+            <PrintOrganization>PrintOrganization</PrintOrganization>
+            <PrintOrganizationUnit>PrintOrganizationUnit</PrintOrganizationUnit>
+			<MessageFromOperator></MessageFromOperator>
+			<printerSupplyInfoUri>http://www.toshibatec.co.jp/worldwide/</printerSupplyInfoUri>
+			<printerUUID></printerUUID>
+		</IPP>
+		<HTTPServer>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<primaryPortNo clone="1" notification="1">80</primaryPortNo>
+			<secondaryPortNo clone="1" notification="1">8080</secondaryPortNo>
+			<SSLPortNo clone="1" notification="1">10443</SSLPortNo>
+			<SSLEnabled clone="1" notification="1">0</SSLEnabled>
+		</HTTPServer>
+		<LDAP>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<SSLEnabled>Disable</SSLEnabled>
+			<server></server>
+			<domainName></domainName>
+			<searchBase></searchBase>
+			<password></password>
+			<sslClientLDAPPort>636</sslClientLDAPPort>
+			<attribute1 clone="1" notification="1" restriction="#;=\" length="32">company</attribute1>
+			<attribute2 clone="1" notification="1" restriction="#;=\" length="32">department</attribute2>
+			<searchMethod clone="1" notification="1">PartialMatch</searchMethod>
+			<connectionTimeOut clone="1">5</connectionTimeOut>
+		</LDAP>
+		<EmailPrint>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<printOnError clone="1" notification="1">1</printOnError>
+			<errorTransferEnabled clone="1" notification="1">0</errorTransferEnabled>
+			<errorTransferAddress clone="1" notification="1"></errorTransferAddress>
+			<emailPartialEnabled clone="1" notification="1">1</emailPartialEnabled>
+			<partialWaitTime clone="1" notification="1">24</partialWaitTime>
+			<mdnReply clone="1" notification="1">0</mdnReply>
+			<timeZone></timeZone>
+			<emailRawSMTPPortNumber>0</emailRawSMTPPortNumber>
+		</EmailPrint>
+		<Bonjour>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<serviceName notification="1"></serviceName>
+			<OperationStatus>1</OperationStatus>
+			<hostName notification="1"></hostName>
+			<portNumber>0</portNumber>
+			<priorityRow>50</priorityRow>
+			<priorityIPP>35</priorityIPP>
+			<priorityLPD>40</priorityLPD>
+			<priorityHttp>0</priorityHttp>
+		</Bonjour>
+		<FTPServer>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Connections>
+				<connection></connection>
+				<connection></connection>
+			</Connections>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<portNo clone="1" notification="1">21</portNo>
+			<SSLEnabled clone="1" notification="1">0</SSLEnabled>
+			<SSLPortNo clone="1" notification="1">990</SSLPortNo>
+		</FTPServer>
+		<LLTD>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<deviceName notification="1" restriction="#;=\" length="16"></deviceName>
+		</LLTD>
+		<USBDirectPrintServer>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+		</USBDirectPrintServer>
+		<LLMNR>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+		</LLMNR>
+		<Telnet>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>0</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<Username clone="1" notification="1">Admin</Username>
+			<Password  clone="1" encryption = "1" notification="1"></Password>
+			<Port clone="1" notification="1">23</Port>
+		</Telnet>
+		<DirectoryServices>
+			<DirectoryService id="0" permId="0">
+                <name>TOSHIBA eBX</name>
+                <oldName>TOSHIBA eBX</oldName>
+				<ipAddress>localhost</ipAddress>
+				<portNo>389</portNo>
+				<authenticationMethod>SimpleBind</authenticationMethod>
+				<searchBase>DC=toshiba-addressbook,DC=com</searchBase>
+				<userName>cn=Manager,DC=toshiba-addressbook,DC=com</userName>
+				<password>secret</password>
+				<timeOut>2</timeOut>
+				<selectedForAuthentication>1</selectedForAuthentication>
+				<selected>1</selected>
+				<SSLEnabled>0</SSLEnabled>
+				<SSLPortNo>636</SSLPortNo>
+			</DirectoryService>
+		</DirectoryServices>
+		<PingTrace>
+			<name>PingTraceroute</name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<Mode></Mode>
+			<Destination></Destination>
+			<LineNo></LineNo>
+			<PageNo></PageNo>
+			<MaxPageNo></MaxPageNo>
+			<ServerListMaxPageNo></ServerListMaxPageNo>
+			<PingTraceStatus></PingTraceStatus>
+		</PingTrace>
+		<PowerManagement>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<checkStatus>0</checkStatus>
+			<enableGoSleep>0</enableGoSleep>
+			<Wakeup>0</Wakeup>
+			<PMWakeUpFilterSNMPv4 clone="1" notification="1">1</PMWakeUpFilterSNMPv4>
+			<PMWakeUpFilterSNMPv6 clone="1" notification="1">0</PMWakeUpFilterSNMPv6>
+			<PMWakeUpFilterSMB clone="1" notification="1">1</PMWakeUpFilterSMB>
+			<PMWakeUpFilterBonjour clone="1" notification="1">0</PMWakeUpFilterBonjour>
+			<PMWakeUpFilterDPWSIPv4 clone="1" notification="1">0</PMWakeUpFilterDPWSIPv4>
+			<PMWakeUpFilterDPWSIPv6 clone="1" notification="1">0</PMWakeUpFilterDPWSIPv6>
+			<PMWakeUpFilterNeighborDiscovery clone="1" notification="1">0</PMWakeUpFilterNeighborDiscovery>
+			<PMWakeUpFilterARP clone="1" notification="1">1</PMWakeUpFilterARP>
+			<PMWakeUpFilterLLMNR clone="1" notification="1">0</PMWakeUpFilterLLMNR>
+			<PMWakeUpFilterLLTD clone="1" notification="1">0</PMWakeUpFilterLLTD>
+			<PMWakeUpFilterSLP clone="1" notification="1">0</PMWakeUpFilterSLP>
+			<PMWakeUpFilterNeighborDiscoveryForManual clone="1" notification="1">1</PMWakeUpFilterNeighborDiscoveryForManual>
+			<PMWakeUpFilterAirPrintIPV6 clone="1" notification="1">1</PMWakeUpFilterAirPrintIPV6>
+			<PMWakeUpFilterBonjourIPV6 clone="1" notification="1">0</PMWakeUpFilterBonjourIPV6>
+            <PMWakeUpFilterAirPrint clone="1" notification="1">1</PMWakeUpFilterAirPrint>
+			<nextWakeupTime></nextWakeupTime>
+		</PowerManagement>
+		<RemoteApplications>
+			<RemoteScan>
+				<enabled clone="1">1</enabled>
+				<enableSSL clone="1">0</enableSSL>
+				<portNo clone="1">20080</portNo>
+				<sslPortNo clone="1">20443</sslPortNo>
+				<availRemoteScan>1</availRemoteScan>
+				<enableAvailRemoteScan>0</enableAvailRemoteScan>
+				<error>0</error>
+			</RemoteScan>
+			<EFI>
+				<enabled>0</enabled>
+				<controllerset>0</controllerset>
+				<controllerreset>0</controllerreset>
+			</EFI>
+		</RemoteApplications>
+		<eBR>
+			<enabled clone="1">2</enabled>
+			<serviceNotifyEnabled clone="1">1</serviceNotifyEnabled>
+			<InitalReg>0</InitalReg>
+			<dealerName></dealerName>
+			<PollingDate1>0</PollingDate1>
+			<PollingDate2>0</PollingDate2>
+			<PollingDate3>0</PollingDate3>
+			<PollingDate4>0</PollingDate4>
+			<PollingDay1 clone="1">1</PollingDay1>
+			<PollingDay2 clone="1">1</PollingDay2>
+			<PollingDay3 clone="1">1</PollingDay3>
+			<PollingDay4 clone="1">1</PollingDay4>
+			<PollingDay5 clone="1">1</PollingDay5>
+			<PollingDay6 clone="1">1</PollingDay6>
+			<PollingDay7 clone="1">1</PollingDay7>
+			<Proxyenabled clone="1">1</Proxyenabled>
+			<HttpProxy clone="1">0.0.0.0</HttpProxy>
+			<HttpPort clone="1">0</HttpPort>
+			<Aduser clone="1"></Aduser>
+			<Adpass clone="1"></Adpass>
+			<RegStatus>0</RegStatus>
+			<LoginName clone="1"></LoginName>
+			<Password></Password>
+			<Coummunity clone="1"></Coummunity>
+			<RegisterURL clone="1">https://device.mfp-support.com:443/device/firstregist.ashx</RegisterURL>
+			<Event clone="1"></Event>
+			<PollingTime></PollingTime>
+            <FinalPollingTime></FinalPollingTime>
+			<EmergencyPollingTime>60</EmergencyPollingTime>
+			<EmergencyPeriod>24</EmergencyPeriod>
+			<CertChange>0</CertChange>
+			<DateCheck></DateCheck>
+			<error>0</error>
+			<ServerPass></ServerPass>
+			<SubscriptionID></SubscriptionID>
+			<MonthEnd>0</MonthEnd>
+			<TonerEvent>0</TonerEvent>
+			<Ordinary clone="1">0</Ordinary>
+			<eBRprevStatus></eBRprevStatus>
+		</eBR>
+		<Stage2>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<SessionTimeOut clone="1" notification="1">90</SessionTimeOut>
+			<EnableHTTPPort clone="1" notification="1">true</EnableHTTPPort>
+			<HTTPPortNumber clone="1" notification="1">49629</HTTPPortNumber>
+			<EnableSSLPort clone="1" notification="1">false</EnableSSLPort>
+			<SSLPortNumber clone="1" notification="1">49630</SSLPortNumber>
+			<SupportVersion clone="1" notification="1">V2.4</SupportVersion>
+			<error></error>
+		</Stage2>
+		<Firewall>
+			<name></name>
+			<enabled clone="1">1</enabled>
+			<active>1</active>
+			<error></error>
+		</Firewall>
+		<AirPrint>
+			<name></name>
+			<enabled  clone="1" notification="1">1</enabled>
+			<error></error>
+		</AirPrint>
+	</Services>
+	<Protocols>
+		<SNMP>
+			<name></name>
+			<enabled clone="1">1</enabled>
+			<active>1</active>
+			<Connections>
+				<connection></connection>
+				<connection></connection>
+			</Connections>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<snmpV1V2Enable clone="1" notification="1">1</snmpV1V2Enable>
+			<readCommunityName clone="1" notification="1">public</readCommunityName>
+			<writeCommunityName clone="1" notification="1">private</writeCommunityName>
+			<snmpV3Enabled clone="1" notification="1">0</snmpV3Enabled>
+			<snmpV3UserTable/>
+			<!--preDefDiscoveryUser>
+				<contextName>MFP</contextName>
+				<exportFileName></exportFileName>
+				<fileSize></fileSize>
+				<snmpV3UserName>Z1uvwxy2PQRST3klmno4FGHIJ5abcde</snmpV3UserName>
+				<snmpV3AuthenticationProtocol>SHA</snmpV3AuthenticationProtocol>
+				<snmpV3AuthenticationPassword>X2010Auth@B-in4Disc!</snmpV3AuthenticationPassword>
+				<snmpV3PrivacyProtocol>DES</snmpV3PrivacyProtocol>
+				<snmpV3PrivacyPassword>X2010Priv@B-in4Disc!</snmpV3PrivacyPassword>
+				<snmpV3PermissionLevel>Discovery</snmpV3PermissionLevel>
+			</preDefDiscoveryUser>
+			<preDefApplicationUser>
+				<contextName notification="1">MFP</contextName>
+				<exportFileName></exportFileName>
+				<fileSize></fileSize>
+				<snmpV3UserName notification="1">ApplicationUser</snmpV3UserName>
+				<snmpV3AuthenticationProtocol notification="1">SHA</snmpV3AuthenticationProtocol>
+				<snmpV3AuthenticationPassword notification="1">AppUser-AuthDef_2010</snmpV3AuthenticationPassword>
+				<snmpV3PrivacyProtocol notification="1">DES</snmpV3PrivacyProtocol>
+				<snmpV3PrivacyPassword notification="1">AppUser-PrivDef_2010</snmpV3PrivacyPassword>
+				<snmpV3PermissionLevel notification="1">General User</snmpV3PermissionLevel>
+			</preDefApplicationUser>
+			</snmpV3UserTable-->
+			<snmpV3TrapEnabled clone="1" notification="1">0</snmpV3TrapEnabled>
+			<snmpV3TrapUserName clone="1" notification="1"></snmpV3TrapUserName>
+			<snmpV3TrapAuthenticationProtocol clone="1" notification="1">MD5</snmpV3TrapAuthenticationProtocol>
+			<snmpV3TrapAuthenticationPassword clone="1" notification="1"></snmpV3TrapAuthenticationPassword>
+			<snmpV3TrapPrivacyProtocol clone="1" notification="1">None</snmpV3TrapPrivacyProtocol>
+			<snmpV3TrapPrivacyPassword clone="1" notification="1"></snmpV3TrapPrivacyPassword> 
+			<authTrapEnabled clone="1" notification="1">1</authTrapEnabled>
+			<alertTrapEnabled clone="1" notification="1">1</alertTrapEnabled>
+			<Trap index="0">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="1">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="2">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="3">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="4">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="5">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="6">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="7">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="8">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<Trap index="9">
+				<trapIPAddress clone="1" notification="1">0.0.0.0</trapIPAddress>
+			</Trap>
+			<ipxTrapAddress clone="1" notification="1"></ipxTrapAddress>
+			<ipTrapCommunityName clone="1" notification="1">public</ipTrapCommunityName>
+			<ipxTrapCommunityName clone="1">public</ipxTrapCommunityName>
+			<portNumber>161</portNumber>
+			<enableRemoteAccess>1</enableRemoteAccess>
+			<tenthTrapPortNumber clone="1">162</tenthTrapPortNumber>
+			<assetNumber></assetNumber>
+		</SNMP>
+		<Xsupplicant>
+			<name></name>
+			<enabled clone="1">0</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<eapType clone="1">eap-mschapv2</eapType>
+			<eapUserName clone="1"></eapUserName>
+			<eapPassword clone="1"></eapPassword>
+			<eapInnerType clone="1"></eapInnerType>
+			<eapInnerUserName clone="1"></eapInnerUserName>
+			<eapInnerPassword clone="1"></eapInnerPassword>
+			<enableTLSComName clone="1">1</enableTLSComName>
+			<eapCertCommonName></eapCertCommonName>
+			<factoryDefault>false</factoryDefault>
+			<eapCertType></eapCertType>
+		</Xsupplicant>
+		<SMTP>
+			<Client>
+				<name></name>
+				<enabled clone="1" notification="1">1</enabled>
+				<active>1</active>
+				<Dependencies>
+					<protocol></protocol>
+					<protocol></protocol>
+				</Dependencies>
+				<Dependents>
+					<protocol></protocol>
+					<protocol></protocol>
+				</Dependents>
+				<error></error>
+				<server clone="1" notification="1" restriction="#;=\" length="128"></server>
+				<domain></domain>
+				<port clone="1" notification="1" min="1" max="65535">25</port>
+				<Authentication>
+					<enabled>1</enabled>
+					<userName clone="1" notification="1" length="64"></userName>
+					<password  clone="1" encryption = "1" notification="1"></password>
+					<desiredType clone="1" notification="1">None</desiredType>
+					<sensedType>None</sensedType>
+				</Authentication>
+				<maxSize notification="1">30</maxSize>
+				<popBeforeSMTP clone="1" notification="1">0</popBeforeSMTP>
+				<enableSSL clone="1" notification="1">Disable</enableSSL>
+				<sslProtocol clone="1" notification="1">STARTTLS</sslProtocol>
+				<connectionTimeOut clone="1" notification="1" min="1" max="180">30</connectionTimeOut>
+			</Client>
+			<Server>
+				<name></name>
+				<enabled clone="1" notification="1">1</enabled>
+				<active>1</active>
+				<Dependencies>
+					<protocol></protocol>
+					<protocol></protocol>
+				</Dependencies>
+				<Dependents>
+					<protocol></protocol>
+					<protocol></protocol>
+				</Dependents>
+				<error></error>
+				<emailAddress clone="1" notification="1" restriction="#;=\" length="192"></emailAddress>
+				<OffRamp>
+					<gwEnabled clone="1" notification="1">0</gwEnabled>
+					<securityEnabled clone="1" notification="1">1</securityEnabled>
+					<printEnabled clone="1" notification="1">1</printEnabled>
+				</OffRamp>
+				<portNo clone="1" notification="1" min="1" max="65535">25</portNo>
+				<limitSize>0</limitSize>
+				<EFIIPAddress>0.0.0.0</EFIIPAddress>
+			</Server>
+		</SMTP>
+		<POP3>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<server clone="1" notification="1" restriction="#;=\" length="128"></server>
+			<pollingRate clone="1" notification="1" min="0" max="4096">5</pollingRate>
+			<port clone="1" notification="1" min="1" max="65535">110</port>
+			<Authentication>
+				<authType clone="1" notification="1">None</authType>
+				<userName clone="1" notification="1" restriction="#;=\" length="96"></userName>
+				<password  clone="1" encryption = "1" notification="1"></password>
+				<loginType clone="1" notification="1">Auto</loginType>
+			</Authentication>
+			<SSLEnabled clone="1" notification="1">Disable</SSLEnabled>
+			<SSLPortNo clone="1" notification="1" min="1" max="65535">995</SSLPortNo>
+			<duplexEnabled>0</duplexEnabled>
+			<outputTray>0</outputTray>
+			<status>0</status>
+			<lastSuccess></lastSuccess>
+			<connectionTimeOut clone="1" notification="1" min="1" max="180">30</connectionTimeOut>
+		</POP3>
+		<SMB>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<deviceName notification="1"></deviceName>
+			<enableDomainLogin clone="1" notification="1">0</enableDomainLogin>
+			<groupName clone="1" notification="1">Workgroup</groupName>
+			<wins clone="1"></wins>
+			<wins2 clone="1"></wins2>
+			<scope></scope>
+			<masterBrowser>0</masterBrowser>
+			<path></path>
+			<printingEnabled clone="1">1</printingEnabled>
+			<fileshareEnabled clone="1">1</fileshareEnabled>
+			<domainName clone="1" notification="1"></domainName>
+			<adsName></adsName>
+			<primaryDomainController clone="1" notification="1"></primaryDomainController>
+			<backupDomainController clone="1" notification="1"></backupDomainController>
+			<logonUser clone="1" notification="1"></logonUser>
+			<password  clone="1" encryption ="1"></password>
+			<digitalSigningSMBServer clone="1" notification="1">auto</digitalSigningSMBServer>
+			<digitalSigningSMBClient clone="1" notification="1">auto</digitalSigningSMBClient>
+			<deviceAuthTimeout clone="1">60</deviceAuthTimeout>
+			<winDomainAuthMethod clone="1">auto</winDomainAuthMethod>
+			<maxConnection>13</maxConnection>
+			<UpdateDriver>0</UpdateDriver>
+			<enableAuthLogin>0</enableAuthLogin>
+			<clientAuthMethod clone="1">auto2</clientAuthMethod>
+			<currentStatus></currentStatus>
+			<userAuthTimeout clone="1">60</userAuthTimeout>
+			<driverCleanup></driverCleanup>
+			<univVersion>6.36.3167.0</univVersion>
+			<ps3Version>6.36.3167.0</ps3Version>
+			<xpsVersion>6.36.3167.0</xpsVersion>
+			<hostAnnouncementSSL clone="1">1</hostAnnouncementSSL>
+			<serverProtocol clone="1">3</serverProtocol>
+			<clientProtocol clone="1">3</clientProtocol>
+			<clientConnectionTimeout clone="1">30</clientConnectionTimeout>
+			<serverAuthGuestLogon clone="1" min="0" max="1">1</serverAuthGuestLogon>
+			<serverAuthUser clone="1" restriction="#;=/\[]:|,+*?&quot;&lt;&gt;" length="32"></serverAuthUser>
+			<serverAuthPassword clone="1" encryption ="1" length="128"></serverAuthPassword>
+		</SMB>
+		<IPX-SPX>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<ncpBurstEnabled>0</ncpBurstEnabled>
+			<frameType clone="1" notification="1">Auto</frameType>
+			<actualFrameType></actualFrameType>
+		</IPX-SPX>
+		<Appletalk>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<zone clone="1" notification="1" restriction="#;=\" length="32">*</zone>
+			<actualZone></actualZone>
+			<deviceName defaulttype ="1" notification="1" restriction="#;=\" length="32"></deviceName>
+			<level>0</level>
+			<type notification="1">LayserWriter</type>
+			<ModelName></ModelName>
+			<PSMaxConnection>10</PSMaxConnection>
+			<PSActiveConnection>10</PSActiveConnection>
+		</Appletalk>
+		<TCP-IP>
+			<name></name>
+			<enabled clone="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<device>eth0</device>
+			<ip notification="1">0.0.0.0</ip>
+			<subnet notification="1">0.0.0.0</subnet>
+			<gw notification="1">0.0.0.0</gw>
+			<hostName notification="1"></hostName>
+			<addressMode notification="1">dhcp</addressMode>
+			<DHCP>
+				<autoDNSUpdate clone="1" notification="1">1</autoDNSUpdate>
+				<autoDDNSUpdate clone="1" notification="1">1</autoDDNSUpdate>
+				<autoWINSUpdate clone="1" notification="1">1</autoWINSUpdate>
+				<autoSMTPUpdate clone="1" notification="1">0</autoSMTPUpdate>
+				<autoPOP3Update clone="1" notification="1">0</autoPOP3Update>
+				<autoSNTPUpdate clone="1" notification="1">0</autoSNTPUpdate>
+			</DHCP>
+			<enableIPConflictDetect clone="1" notification="1">1</enableIPConflictDetect>
+			<serviceUIEnabled>0</serviceUIEnabled>
+			<faxInitializationEnabled>0</faxInitializationEnabled>
+			<mtuSize clone="1">1500</mtuSize>
+		</TCP-IP>
+		<DNS>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<primaryServer clone="1" notification="1"></primaryServer>
+			<secondaryServer clone="1" notification="1"></secondaryServer>
+			<dnsTimeoutValue clone="1" notification="1">5</dnsTimeoutValue>
+			<dnsValidationEnabled clone="1">1</dnsValidationEnabled>
+			<dnsValidationInterval clone="1">60</dnsValidationInterval>
+		</DNS>
+		<DDNS>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<domainName clone="1" notification="1"></domainName>
+			<primaryLoginName clone="1"></primaryLoginName>
+			<secondaryLoginName clone="1"></secondaryLoginName>
+			<secondaryPassword clone="1"></secondaryPassword>
+			<primaryPassword clone="1"></primaryPassword>
+			<securityMethod notification="1">None</securityMethod>
+			<sdnsKeyFile></sdnsKeyFile>
+			<sdnsPrivateKeyFile></sdnsPrivateKeyFile>
+			<ddnsTimeoutValue clone="1" notification="1">60</ddnsTimeoutValue>
+		</DDNS>
+		<SLP>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<ttl clone="1" notification="1">8</ttl>
+			<scope clone="1" notification="1">DEFAULT</scope>
+		</SLP>
+		<FTPClient>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<portNo clone="1" notification="1" min="1" max="65535">21</portNo>
+			<SSLPortNo clone="1">990</SSLPortNo>
+			<ForcedSSLSetting clone="1">0</ForcedSSLSetting>
+			<SSLSetting clone="1" notification="1">AcceptCertWithNoCA</SSLSetting>
+			<Mode clone="1" notification="1">Auto</Mode>
+			<ConnectionTimeout clone="1">30</ConnectionTimeout>
+		</FTPClient>
+		<IPV6>
+			<name></name>
+			<enabled clone="1" notification="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<version>1.1</version>
+			<addressMode notification="1">Stateful</addressMode>
+			<linkLocalAddress notification="1"></linkLocalAddress>
+			<primaryDNSIP clone="1" notification="1"></primaryDNSIP>
+			<secondaryDNSIP clone="1" notification="1"></secondaryDNSIP>
+			<Manual>
+				<IPAddress>
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<useDHCPV6Options clone="1" notification="1">0</useDHCPV6Options>
+			</Manual>
+			<Stateless>
+				<useDHCPV6IPAddress clone="1" notification="1">1</useDHCPV6IPAddress>
+				<useDHCPV6Options>
+					<enable clone="1" notification="1">true</enable>
+					<fqdnOptionFlag>
+						<enable clone="1">false</enable>
+						<updateMethod clone="1">Server</updateMethod>
+					</fqdnOptionFlag>
+				</useDHCPV6Options>
+				<IPAddress index="1">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="2">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="3">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="4">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="5">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="6">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+				<IPAddress index="7">
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+			</Stateless>
+			<Stateful>
+				<useDHCPV6IPAddress clone="1" notification="1">1</useDHCPV6IPAddress>
+				<useDHCPV6Options>
+					<enable clone="1" notification="1">true</enable>
+					<fqdnOptionFlag>
+						<enable clone="1">false</enable>
+						<updateMethod clone="1">Server</updateMethod>
+					</fqdnOptionFlag>
+				</useDHCPV6Options>
+				<IPAddress>
+					<ipAddress notification="1"></ipAddress>
+					<prefix notification="1"></prefix>
+					<gateway notification="1"></gateway>
+				</IPAddress>
+			</Stateful>
+		</IPV6>
+		<DPWS>
+			<name></name>
+			<enabled clone="1">1</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<Dependents>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependents>
+			<error></error>
+			<mode>StandAlone</mode>
+			<multicastIP></multicastIP>
+			<discoveryPort clone="1">3702</discoveryPort>
+			<discoveryProxyIP clone="1"></discoveryProxyIP>
+			<discoveryAppSeaquenceID>0</discoveryAppSeaquenceID>
+			<metadataXIP>0</metadataXIP>
+			<metaDataXPort clone="1">50081</metaDataXPort>
+			<printServiceIP>0</printServiceIP>
+			<printServicePort clone="1">50082</printServicePort>
+			<scanServiceIP>0</scanServiceIP>
+			<scanServicePort clone="1">50083</scanServicePort>
+			<friendlyName notification="1" restriction=";#\/:*?|,!=&lt;&gt;&quot;" length="127"></friendlyName>
+			<printServiceStatus clone="1" notification="1">1</printServiceStatus>
+			<printerName notification="1" restriction=";#\/:*?|,!=&lt;&gt;&quot;" length="127"></printerName>
+			<printerInformation notification="1" restriction="#;=\" length="127"></printerInformation>
+			<printEventRate>1</printEventRate>
+			<scanServiceStatus clone="1" notification="1">1</scanServiceStatus>
+			<scannerName notification="1" restriction=";#\/:*?|,!=&lt;&gt;&quot;" length="127"></scannerName>
+			<scannerInformation notification="1" restriction="#;=\" length="127"></scannerInformation>
+			<scannerLogService>0</scannerLogService>
+			<wiaScanDriverType>1</wiaScanDriverType>
+			<AcceptPullScanJobWithoutSSL>2</AcceptPullScanJobWithoutSSL>
+			<SSLEnabled clone="1" notification="1">0</SSLEnabled>
+			<secureMatadataXServicePort>50084</secureMatadataXServicePort>
+			<secureScanServicePort>50086</secureScanServicePort>
+			<securePrintServicePort>50085</securePrintServicePort>
+			<deviceUUID></deviceUUID>
+			<maxConnections>10</maxConnections>
+			<activeConnection>10</activeConnection>
+			<JobExecutionMode clone="1" notification="1">3</JobExecutionMode>
+			<PrintEventRate>1</PrintEventRate>
+			<PrintPeriodicTimerID></PrintPeriodicTimerID>
+		</DPWS>
+		<IPSec>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>1</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+			<Filters count="0"></Filters>
+			<IKEKeys count="0"></IKEKeys>
+			<ManualKeys count="0"></ManualKeys>
+			<Profiles count="0"></Profiles>
+			<Policies count="0" notification="1"></Policies>
+			<selectedPolicy clone="1"></selectedPolicy>
+			<flushConnection>false</flushConnection>
+			<ipsecFactoryDefault>false</ipsecFactoryDefault>
+			<NATTEnable clone="1">1</NATTEnable>
+			<CRLVerification clone="1">2</CRLVerification>
+			<IPsecCertSelected>0</IPsecCertSelected>
+		</IPSec>
+		<Krb>
+			<name></name>
+			<enabled>0</enabled>
+			<active>0</active>
+			<Dependencies>
+				<protocol></protocol>
+				<protocol></protocol>
+			</Dependencies>
+			<error></error>
+				<windowsAuthEnabled clone="1">0</windowsAuthEnabled>
+				<useNTDomainServer clone="1">0</useNTDomainServer>
+				<Domain1>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain1>
+				<Domain2>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain2>
+				<Domain3>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain3>
+				<Domain4>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain4>
+				<Domain5>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain5>
+				<Domain6>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain6>
+				<Domain7>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain7>
+				<Domain8>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain8>
+				<Domain9>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain9>
+				<Domain10>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain10>
+				<Domain11>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain11>
+				<Domain12>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain12>
+				<Domain13>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain13>
+				<Domain14>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain14>
+				<Domain15>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain15>
+				<Domain16>
+					<domainName clone="1"></domainName>
+					<pdc clone="1"></pdc>
+					<bdc clone="1"></bdc>
+				</Domain16>
+		</Krb>
+	</Protocols>
+	<Adapters>
+		<Wire>
+			<name></name>
+			<enabled>1</enabled>
+			<active>1</active>
+			<macAddress>00-00-00-00-00-00</macAddress>
+			<speed clone="1" notification="1">AUTO</speed>
+			<actualSpeed></actualSpeed>
+			<autoLinkSpeed>1</autoLinkSpeed>
+			<frameType>IEEE 802.3</frameType>
+			<error></error>
+			<enableLinkDetection clone="1" notification="1">1</enableLinkDetection>
+		</Wire>
+		<Wireless>
+			<name></name>
+			<enabled clone="1" notification="1">0</enabled>
+			<active>1</active>
+			<currentStatus></currentStatus>
+			<macAddress></macAddress>
+			<autoLinkSpeed>1</autoLinkSpeed>
+			<frameType></frameType>
+			<country></country>
+			<manufacturer></manufacturer>
+			<model>HB95</model>
+			<firmwareVersion></firmwareVersion>
+			<networkType clone="1" notification="1">Infrastructure</networkType>
+			<ssid clone="1" notification="1"></ssid>
+			<rssi></rssi>
+			<enableAvailableNetwork>0</enableAvailableNetwork>
+			<Channel>
+				<autoEnabled clone="1" notification="1">Auto</autoEnabled>
+				<channel clone="1" notification="1"></channel>
+			</Channel>
+			<Security>
+				<mode clone="1" notification="1">None</mode>
+				<WEP>
+					<bitSize clone="1" notification="1">64</bitSize>
+					<keyFormat clone="1" notification="1">ASCII</keyFormat>
+					<wepKey clone="1" notification="1"></wepKey>
+				</WEP>
+			<WPA>
+				<authenticationProtocol clone="1" notification="1">EAP-TLS</authenticationProtocol>
+				<eapTLSUserName clone="1" notification="1"></eapTLSUserName>
+				<enableTLSComName clone="1">1</enableTLSComName>
+				<eapCertCommonName></eapCertCommonName>
+				<peapUserName clone="1" notification="1"></peapUserName>
+				<peapPassword clone="1" notification="1"></peapPassword>
+				<encryptionType clone="1">TKIP</encryptionType>
+			</WPA>
+			<WPA-PSK>
+				<encryptionType clone="1" notification="1">TKIP</encryptionType>
+				<passPhrase clone="1" notification="1"></passPhrase>
+			</WPA-PSK>
+			<S802.1X>
+				<authenticationProtocol clone="1">EAP-TLS</authenticationProtocol>
+				<eapTLSUserName clone="1"></eapTLSUserName>
+				<enableTLSComName clone="1">1</enableTLSComName>
+				<eapCertCommonName></eapCertCommonName>
+				<peapUserName clone="1"></peapUserName>
+				<peapPassword clone="1"></peapPassword>
+				<encryptionType clone="1">DYNAMIC-WEP</encryptionType>
+			</S802.1X>
+			</Security>
+			<Transmit>
+				<TransmittingOutput clone="1" notification="1">100</TransmittingOutput>
+				<TransmittingRate notification="1">Auto</TransmittingRate>
+				<TransmittingRateValue notification="1">1</TransmittingRateValue>
+			</Transmit>
+			<networkMode clone="1">1</networkMode>
+			<factoryDefault>false</factoryDefault>
+			<wirelessCertType></wirelessCertType>
+		</Wireless>
+		<Bluetooth>
+			<name></name>
+			<enabled clone="1">1</enabled>
+			<active>1</active>
+			<discoverable clone="1">1</discoverable>
+			<encryption clone="1">1</encryption>
+			<security clone="1">1</security>
+			<pin  clone="1" encryption = "1"></pin>
+			<deviceAddress></deviceAddress>
+			<deviceName></deviceName>
+		</Bluetooth>
+	</Adapters>
+	<Status>
+		<state></state>
+		<bootMode></bootMode>
+		<TCP-IP></TCP-IP>
+		<IPV6></IPV6>
+		<Xsupplicant></Xsupplicant>
+		<IPSec></IPSec>
+		<Networkadapter></Networkadapter>
+		<DDNS></DDNS>
+		<SMB></SMB>
+		<Wireless></Wireless>
+		<eBR></eBR>
+		<RemoteApplication></RemoteApplication>
+		<POP3></POP3>
+		<BOX>
+			<state>false</state>
+			<ipAddress></ipAddress>
+		</BOX>
+		<securityLevel>1</securityLevel>
+		<PrintErrorState>
+			<ConnectionTimeout>false</ConnectionTimeout>
+			<MaxConnection>
+				<Raw>false</Raw>
+				<LPD>false</LPD>
+				<IPP>false</IPP>
+				<SMB>false</SMB>
+				<WSPrint>false</WSPrint>
+			</MaxConnection>
+			<WorkflowFull>false</WorkflowFull>
+			<HDDFull>false</HDDFull>
+		</PrintErrorState>
+	</Status>
+</Network>

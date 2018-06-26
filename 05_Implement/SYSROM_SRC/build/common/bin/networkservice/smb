@@ -1,0 +1,764 @@
+#! /bin/sh
+# description:   
+#
+# 
+# This script also starts lprng printing server (lprng).
+
+SAMBA_BIN=$AL_NET_BIN
+SAMBA_CONF_DIR=$AL_NET_CONF
+#LOCKS_FOLDER=/work/al/network/samba/var/locks
+LOCKS_FOLDER=/ramdisk/al/network/samba
+PRIVATE_FOLDER=/usr/local/ebx/private
+KERBEROS_STATUS=/home/kerberos_status.txt
+SMB_CONF_FILE=$AL_NET_CONF/smb.conf
+RAMDISK_TMP_PATH=/ramdisk/al/tmp
+KRB5KDC_ERR_PREAUTH_FAILED=6
+KRB5KDC_ERR_CLIENT_REVOKED=18
+KRB5KRB_AP_WRONG_PRINC=144
+EB2=/home/SYSROM_SRC
+SAMBA_LOG_PATH=/ramdisk/al/network/log
+# Source function library.
+#. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+#. /etc/sysconfig/network
+
+# Check that networking is up.
+#[ ${NETWORKING} = "no" ] && exit 0
+
+
+test -x ${SAMBA_BIN}/smbd || exit 0
+
+test -f ${SAMBA_CONF_DIR}/smb.conf || exit 0
+
+
+#update_netbios_name()
+#{
+#	#update netbios name if netbios name is empty otherwise do nothing.
+#	#HOST_NAME=`hostname`
+#	HOST_NAME="MFP-`ifconfig | grep HWaddr | cut -c 39- | sed 's/://g'`"
+#	NETBIOS_NAME=`sed -n '/netbios name/p' ${SAMBA_CONF_DIR}/smb.conf | cut -d = -f 2`
+#	if [ x"${NETBIOS_NAME}" = x"" ]; then
+#		sed "s/netbios name=/netbios name=$HOST_NAME/g" ${SAMBA_CONF_DIR}/smb.conf > ${SAMBA_CONF_DIR}/smb.conf.new
+#		mv -f ${SAMBA_CONF_DIR}/smb.conf.new ${SAMBA_CONF_DIR}/smb.conf
+#	fi
+#}
+
+# initialize return values
+RETVAL=1
+RETVAL_SAMBA=0
+JOINED_AD_DOMAIN=0
+
+# startup code for everything
+start_samba() {
+	kdestroy
+	#check if samba is already running
+	Join_Status=`cat ${SAMBA_CONF_DIR}/smb.conf  |grep "security" | awk -F "="  '{ print $2 }'`
+	echo $Join_Status
+	PID=`pidof -s smbd`
+	if [ $PID ]; then
+		echo "samba is already running!!!"
+		COUNT=0 
+		while [ "$PID" != "" ] 
+		do
+			if test $COUNT -le 10
+			then
+				echo "$COUNT Waiting for smbd shutdown"
+				PID=`pidof -s smbd`
+				if [ $PID ]; then
+					killall -v smbd
+					killall -v nmbd
+				#	killall -v winbindd
+					((COUNT=COUNT+1))
+					sleep 1
+					else
+					break
+				fi
+			else
+				break
+			fi
+		done
+	fi
+	
+	#update_netbios_name
+	echo -n "Starting samba ..."
+	${SAMBA_BIN}/nmbd -s ${SAMBA_CONF_DIR}/smb.conf -D
+	${SAMBA_BIN}/smbd -s ${SAMBA_CONF_DIR}/smb.conf -D
+#	if [ x"$Join_Status" != x"user" ]; then
+#		echo "Starting winbindd..."
+#		${SAMBA_BIN}/winbindd -s ${SAMBA_CONF_DIR}/smb.conf -D
+#	else
+#		echo "Not Starting winbindd..."
+#	fi	
+}
+
+clean_tdb() {
+	#Log and script cleanup code for samba
+#	rm -f ${AL_NET_LOG}/samba_*
+
+	cd $RAMDISK_TMP_PATH
+	if [ -f ${RAMDISK_TMP_PATH}/unexpected.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool unexpected.tdb
+	else 
+		echo "unexpected.tdb file is missing" 
+	fi
+	
+	cd $LOCKS_FOLDER
+	if [ -f ${LOCKS_FOLDER}/gencache.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool gencache.tdb 
+	else 
+		echo "gencache.tdb file is missing" 
+	fi 
+
+	if [ -f ${LOCKS_FOLDER}/brlock.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool brlock.tdb
+	else 
+		echo "brlock.tdb file is missing" 
+	fi 
+	
+	#if [ -f ${LOCKS_FOLDER}/winbindd_cache.tdb ]; then 
+	#	echo "q" |echo "erase" |tdbtool winbindd_cache.tdb
+	#else 
+	#	echo "winbindd_cache.tdb file is missing" 
+	#fi
+
+	if [ -f ${LOCKS_FOLDER}/account_policy.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool account_policy.tdb
+	else 
+		echo "account_policy.tdb file is missing" 
+	fi
+	if [ -f ${LOCKS_FOLDER}/connections.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool connections.tdb
+	else 
+		echo "connections.tdb file is missing" 
+	fi
+
+	if [ -f ${LOCKS_FOLDER}/netsamlogon_cache.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool netsamlogon_cache.tdb
+	else 
+		echo "netsamlogon_cache.tdb file is missing" 
+	fi
+
+	if [ -f ${LOCKS_FOLDER}/registry.tdb ]; then 
+		echo "q" |echo "erase" |tdbtool registry.tdb
+	else 
+		echo "registry.tdb file is missing" 
+	fi
+
+	# code added for samba_printtdb_3.5.16.patch 
+        if [ -f ${LOCKS_FOLDER}/ntprinters.tdb ]; then 
+                rm -fr ${LOCKS_FOLDER}/ntprinters.tdb 
+                echo "q" |echo "create ntprinters.tdb" |tdbtool 
+        else 
+                echo "q" |echo "create ntprinters.tdb" |tdbtool 
+        fi     
+	cd $PRIVATE_FOLDER
+#	if [ -f ${PRIVATE_FOLDER}/secrets.tdb ]; then           ##Ranjith: STFR-7229 fix(Retain the Security keys/info)
+#		echo "q" |echo "erase" |tdbtool secrets.tdb
+#	else 
+#		echo "secrets.tdb file is missing" 
+#	fi
+
+	if [ -f ${PRIVATE_FOLDER}/smbpasswd ]; then 
+		unlink ${PRIVATE_FOLDER}/smbpasswd
+	else 
+		echo "smbpasswd file is missing" 
+	fi
+}
+
+#return samba to share
+set_samba_as_share(){
+	sed -i -e '/security=/ c\security=user' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/workgroup=/ c\workgroup=Workgroup' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/password server=/ c\password server=' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/realm=/ c\realm=' ${SAMBA_CONF_DIR}/smb.conf
+	DOMAIN_NNAME=`grep "workgroup" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'`
+	echo "Status-------> Writing workgroup info for share $DOMAIN_NNAME to panel"
+	${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/currentStatus ${DOMAIN_NNAME}&
+	${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/adsName workgroup &
+}
+
+# code for domain join
+domain_join() { 
+	echo -n 'starting samba  service '
+	domainJoin=`echo $2|cut -c3`
+	#echo $domainJoin $1 $2 $3
+	echo "Joining domain specified in smb.conf"
+	
+	#To join NT domain, set security=domain in smb.conf
+	if [ -z $3 ] || [ -z $4 ];then
+		echo "No username and password argument is supplied"
+		return 1
+	else
+		username=`echo $3|cut -c3-`
+		password=`echo $4|cut -c3-`
+		UP="$username%$password"
+	fi
+	#echo $username
+	#echo $password
+	#echo $UP
+	if [ -z $username ]
+	then
+		echo -n "Empty/Invalid username NT domain....."
+		echo -n "Could not join the NT domain because the username is empty"
+		return 1
+	else
+		echo "Valid username for NT domain"
+	fi
+
+	if [ -z $password ]
+	then
+		echo -n "Empty/Invalid password for  NT domain ....."
+		echo -n "Could not join the NT domain because the password is empty"
+		return 1
+	else
+		echo -n "Valid password for  NT domain"
+	fi
+
+	# set security=domain in smb.conf
+	sed -i -e '/security=/ c\security=domain' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/map to guest=/ c\map to guest=bad uid' ${SAMBA_CONF_DIR}/smb.conf
+	DOMAIN_NNAME=`grep "realm" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'| awk -F"." '{ print $1 }'`
+	unlink ${SAMBA_CONF_DIR}/lmhosts
+	${SAMBA_BIN}/net ads lookup -U$UP -s ${SAMBA_CONF_DIR}/smb.conf > ${SAMBA_CONF_DIR}/lmhosts
+	NetBIOS=`cat ${SAMBA_CONF_DIR}/lmhosts  |grep -e "Pre-Win2k Hostname" |  cut -d ':' -f2`
+	echo $NetBIOS > ${SAMBA_CONF_DIR}/lmhosts
+	echo $NetBIOS
+
+	if [ "$NetBIOS" == "" ];
+	then
+                echo "Status-------> NT Domain joined failed...INVALID Domain Name"
+                return 1;
+        fi
+
+	echo "${SAMBA_BIN}/net rpc join..."
+	`${SAMBA_BIN}/net rpc join -U$UP  -s ${SAMBA_CONF_DIR}/smb.conf 2>&1 | tee  ${KERBEROS_STATUS}`
+#	ret_rpc=`cat ${KERBEROS_STATUS} |grep "Joined domain " | awk -F " "  '{ print $3 }'| awk -F "."  '{ print $1 }'` > /dev/null
+    ret_rpc=`cat ${KERBEROS_STATUS} |grep "Using short domain name --" | awk -F " "  '{ print $6 }'| awk -F "."  '{ print $1 }'` > /dev/null
+	echo "Exiting DOMAIN JOIN() = $ret_rpc and domain name = $DOMAIN_NNAME "
+	unlink ${KERBEROS_STATUS}
+	if [ x"$ret_rpc" == x"$DOMAIN_NNAME" ];
+	then
+		echo "Status-------> NT Domain joined success, setting $DOMAIN_NNAME to panel"
+		DOMAIN_NNAME=`grep "realm" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'`
+		${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/currentStatus ${DOMAIN_NNAME}&
+		${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/adsName domain &
+		return 0
+	else
+		echo "Status-------> NT Domain joined failed"
+		return 1
+	fi
+}
+
+#code for AD Join
+ad_join() {
+	echo "Joining AD domain specified in smb.conf"
+	#To join AD domain, set security=ADS in smb.conf
+	###	${SAMBA_BIN}/kdestroy   ### for testing IPV6 join,,,dont delet it.
+		
+	if [ -z $3 ] || [ -z $4 ];then
+		echo "No username and password argument is supplied for NT domain "
+		return 1
+	else
+		username=`echo $3|cut -c3-`
+		password=`echo $4|cut -c3-`
+		UP="$username%$password"
+	fi
+	
+	#echo $username
+	#echo $password
+	#echo $UP
+	if [ -z $username ]
+	then
+		echo -n "Empty/Invalid username....."
+		echo -n "Could not AD join the domain because the username is empty"
+		return 1
+	else
+		echo "Valid username for AD domain Join"
+	fi
+	if [ -z $password ]
+	then
+		echo -n "Empty/Invalid password for AD Domain....."
+		echo -n "Could not join the domain because the password is empty"
+		return 1
+	else
+		echo -n "Valid password for AD domain"
+	fi
+		
+	realm1=`grep realm= ${SAMBA_CONF_DIR}/smb.conf | cut -f2 -d=` 
+
+	# set security=ADS in smb.conf     	 ##Set the "map ro guest=bad uid" parameter in SMB.CONF
+	sed -i -e '/security=/ c\security=ADS' ${SAMBA_CONF_DIR}/smb.conf
+	sed -i -e '/map to guest=/ c\map to guest=bad uid' ${SAMBA_CONF_DIR}/smb.conf
+              
+
+	# synchronize time with the AD domain controller
+	org_date=`date`
+	#dc_ip=$(grep "password server" ${SAMBA_CONF_DIR}/smb.conf | cut -d= -f2)
+	#ntpdate $dc_ip
+
+	#kdestroy 
+	# echo $password |kinit --password-file=STDIN $username@$realm1 
+	iter=0
+	while [ 1 ]
+	do
+		ERR=`echo $password | kinit --password-file=STDIN $username@$realm1 2>&1`
+		#realm_name(TO UPPER) done at smbnmo.cpp itself
+		ret=$?
+		echo "KINIT_ADS returns -->$ret"
+		if test $ret -ne "0";then
+			if test $iter -le 10
+			then
+				#ERR=`echo $password | kinit --password-file=STDIN $username@$realm1 2>&1`
+				echo "kinit outputs -> $ERR"
+				Revoke_ErrorPattern1="Clients credentials"
+				Revoke_ErrorPattern2=" revoked" # Clients credentials have been revoked
+				val0=`echo $ERR|grep -s $Revoke_ErrorPattern1` 
+				val00=`echo $ERR| grep -s $Revoke_ErrorPattern2`
+				#kinit: krb5_get_init_creds: Clients credentials have been revoked
+				if [ x"$val0" != x"" -o x"$val00" != x"" ];then
+					echo "Client Credentials revoked from AD server"
+					##Returning the error no.18 as per Kerberos v5 library error code table.
+						
+					return $KRB5KDC_ERR_CLIENT_REVOKED
+				fi
+				
+				passwd_ErrorPattern="incorrect"  #error: incorrect Password
+				user_ErrorPattern="Client"	#error: Client ($username@$realm1) unknown
+				user_ErrorPattern1="unknown"
+			
+				val1=`echo $ERR| grep -s $passwd_ErrorPattern`   #incorrect Password,KRBv5 Err no.24 
+				val11=`echo $ERR | grep -s $user_ErrorPattern | grep -s $user_ErrorPattern1` 
+				#Client ($username@$realm1) unknown,KRBv5 Err no.6
+				if [ x"$val1" != x""  -o x"$val11" != x"" ];
+				then
+					echo "TA_EMAIL Logging starts here...\n"
+					${SAMBA_BIN}/alnetmsglog log 812A &
+					${SAMBA_BIN}/alnetmsglog notify 812A &
+					#To avoid Account lockout case:Bypass MFP to Share-level,without trying for Domain Join.
+					#Returning the error no.6 as per Kerberos v5 library error code table.
+					return $KRB5KDC_ERR_PREAUTH_FAILED  
+				else
+					echo "No logging Required...1"
+				fi
+
+				time_ErrorPattern1="negative"
+				time_ErrorPattern2="lifetime" 	#error: Requested effective lifetime is negative
+				val2=`echo $ERR|grep -s $time_ErrorPattern1|grep -s $time_ErrorPattern2` 
+				#Requested effective lifetime is negative
+				if [ x"$val2" != x"" ];then
+					echo "TA_EMAIL Logging starts here...\n"
+					${SAMBA_BIN}/alnetmsglog log 8128 &
+					${SAMBA_BIN}/alnetmsglog notify 8128 &
+					return 1
+				else
+					echo "No logging Required...2"
+				fi 
+				
+				realm_ErrorPattern1="unable "
+				realm_ErrorPattern2=" KDC " #error:unable to reach any KDC in realm $realm_name
+				val3=`echo $ERR|grep -s $realm_ErrorPattern1|grep -s $realm_ErrorPattern2`
+														  #unable to reach any KDC in realm $realm_name
+				if [ x"$val3" != x"" ];then
+					echo "TA_EMAIL Logging starts here...\n"
+					${SAMBA_BIN}/alnetmsglog log 812B &
+					${SAMBA_BIN}/alnetmsglog notify 812B &
+					return 1
+				else
+					echo "No logging Required...3"
+				fi
+		
+							realm_ErrorPattern3="Wrong "
+							realm_ErrorPattern4="realm" #error:Wrong realm
+							val5=`echo $ERR|grep -s $realm_ErrorPattern3|grep -s $realm_ErrorPattern4`
+														  #Wrong realm
+							if [ x"$val5" != x"" ];then
+					 ##Returning the error no.144 as  per Kerberos v5 library error code table.
+									return $KRB5KRB_AP_WRONG_PRINC
+				fi
+
+				# Kdestroy removed before kinit command
+				tExpire_ErrorPattern1="skew "
+				tExpire_ErrorPattern2=" great" # Clock skew too great
+				val4=`echo $ERR|grep -s $tExpire_ErrorPattern1|grep -s $tExpire_ErrorPattern1`
+				#kinit: krb5_get_init_creds: Clock skew too great
+							if [ x"$val4" != x"" ];then
+					echo "TA_EMAIL Logging starts here...\n"
+					${SAMBA_BIN}/alnetmsglog log 8129 &
+					${SAMBA_BIN}/alnetmsglog notify 8129 &
+					kdestroy  #destroy the existing ticket and Get the new TGT from server .
+					continue
+					#return 0
+				else
+					echo "No logging Required...4"
+				fi
+				((iter=iter+1))
+			else
+				echo "breaking after trying 10 times"
+				sleep 1
+				return 1
+			fi
+		else 
+			#echo "Primary authentication failed"
+			#return 0
+			#exit 1
+			#else
+			#echo -n "kinit is successfull"
+			echo "net ads join ....."
+			echo "Temproaory file Created and will be deleted: $KERBEROS_STATUS"
+			DOMAIN_NNAME=`grep "realm" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'`
+			${SAMBA_BIN}/net ads join -U$UP  -s ${SAMBA_CONF_DIR}/smb.conf 2>&1 | tee  ${KERBEROS_STATUS}
+			ret_ads=`cat ${KERBEROS_STATUS} | grep "Joined" | awk -F "'" '{ print $4 }' | tr "[:lower:]" "[:upper:]"` > /dev/null
+			unlink ${KERBEROS_STATUS}
+			echo "Joining to domain=$ret_ads, Actual domain=$DOMAIN_NNAME"
+			if [ x"$ret_ads" == x"$DOMAIN_NNAME" ];then
+				echo "AD joined success, setting $DOMAIN_NNAME for Panel Display"
+				${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/currentStatus ${DOMAIN_NNAME}&
+				${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/adsName ads &
+				return 0
+			else
+				echo "AD joined failed"
+				return 1
+			fi	
+		fi
+		#echo "EXITING ADJOIN() =$ret_ads"
+		#return $ret_ads
+	done
+}
+
+
+case "$1" in
+'start')
+	echo -n 'starting samba  service '
+	#20160109:HDD Access reduction:log path moved to ramdisk
+	#before start check if samba log directory exists
+	if [ ! -d ${SAMBA_LOG_PATH} ]; then
+		echo "Creating log Direcrtory for samba."
+		mkdir -p ${SAMBA_LOG_PATH}
+	fi
+
+	#HDD Access for tdb files: move path of tdb files to /ramdisk
+	if [ ! -d ${LOCKS_FOLDER} ]; then
+		echo "Creating Direcrtory for samba tdb files"
+		mkdir -p ${LOCKS_FOLDER}
+		mkRet=$?
+		echo "mkdir returns:"$mkRet
+		if test $mkRet -ne "0";then
+			if [ -f /ramdisk/al/network/samba ];then
+			       rm -f /ramdisk/al/network/samba
+			fi
+		       mkdir -p ${LOCKS_FOLDER}
+		fi
+
+	else
+		echo "samba tdb files Directory exists"
+	fi
+
+	if [ ! -f /ramdisk/al/network/samba/smb.version.conf ]; then
+		cp -p ${EB2}/NoBuildItems/AL/Network/smb.version.conf /ramdisk/al/network/samba/smb.version.conf 
+	fi
+
+	clean_tdb
+	domainJoin=`echo $2|cut -c3`
+#	echo "Command=" $domainJoin $1 $2 $3 $4 $5 
+	case "$domainJoin" in
+	1)
+		if [ $domainJoin -eq 1 ];then
+			#case 1 -> Auto
+			echo "AUTO JOIN -> 08-settings[1] in progress....."
+			ad_join $1 $2 $3 $4 $5
+			ret_m=$?
+			echo "ret_m-----------"$ret_m
+			##Bypassing to share level for Account Lock-out Scenario 
+			##kinit returns errno.6(Kerberos v5 library error code table)
+			if test $ret_m -eq "6";then
+				echo "AD-join Failed with Invalid Cerendtials."
+				echo "Set samba as share as Domain Join will also fail."	
+				set_samba_as_share
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&	
+			else 
+			if [ x"$ret_m" != x"0" ] ; then
+				JOINED_AD_DOMAIN=0
+				echo "AD-Join failed, try joining NT domain"
+				sed -i -e '/client NTLMv2 auth=/ c\client NTLMv2 auth=No' ${SAMBA_CONF_DIR}/smb.conf               
+				#set date back to the original
+				#date -s "$org_date"
+				echo "ret_m after AD join()"$ret_m
+				domain_join $1 $2 $3 $4 $5
+				ret_m=$?
+				if [ x"$ret_m" != x"0" ] ; then
+					echo "NT Domain-Join failed too, set samba as share"
+					set_samba_as_share
+					${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+				else
+					echo "Successfullt joined NT domain"
+					${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+				fi
+			else
+				JOINED_AD_DOMAIN=1;
+				echo "Successfully joined AD domain"
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			fi
+		fi
+		else 
+			${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf              
+		fi
+		;;
+	2)
+		if [ $domainJoin -eq 2 ] ;then  
+			#case 2->Kerberos
+			echo "AD JOIN -> 08settings[2] in progress....."
+			ad_join $1 $2 $3 $4 $5
+			ret_ad=$?
+			echo $ret_ad
+			if test $ret_ad -ne "0";then
+				echo "08-settings[2]: AD-Join failed, set samba as share"
+				set_samba_as_share
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+			else
+				echo "08-settings[2]:Successfully joined AD domain"
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			fi
+		else
+			${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf
+		fi 
+		;;
+
+	3)
+		if [ $domainJoin -eq 3 ];then	 
+			#case 3->NTLMv2
+			sed -i -e '/client NTLMv2 auth=/ c\client NTLMv2 auth=Yes' ${SAMBA_CONF_DIR}/smb.conf               
+			echo "NTLM JOIN -> 08settings[3] in progress......"
+			domain_join $1 $2 $3 $4 $5
+			ret_dom=$?
+			if test $ret_dom -ne "0";then
+				echo "08-settings[3]: Domain Join failed, set samba as share"
+				set_samba_as_share
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+			else
+				echo "08-settings[3]:Successfully joined NT domain"
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			fi
+		else
+			${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			echo "Other than NTLMv2";
+			sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf               
+		fi
+		;;
+
+	4)
+		if [ $domainJoin -eq 4 ];then	 
+			#case 4->NTLMv1
+			sed -i -e '/client NTLMv2 auth=/ c\client NTLMv2 auth=No' ${SAMBA_CONF_DIR}/smb.conf               
+			echo "NTLM JOIN -> 08settings[3] in progress......"
+			domain_join $1 $2 $3 $4 $5
+			ret_dom=$?
+			if test $ret_dom -ne "0";then
+				echo "08-settings[4]: Domain Join failed, set samba as share"
+				set_samba_as_share
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+			else
+				echo "08-settings[4]:Successfully joined NT domain"
+				${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			fi
+		else
+			${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+			echo "Other than NTLMv2";
+			sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf               
+		fi
+		;;
+	5)
+        if [ $domainJoin -eq 5 ];then
+            #case 5->Auto2
+         echo "AUTO2 JOIN -> 08-settings[5] in progress....."
+            ad_join $1 $2 $3 $4 $5
+            ret_m=$?
+            echo "ret_m-----------"$ret_m
+            ##Bypassing to share level for Account Lock-out Scenario
+            ##kinit returns errno.6(Kerberos v5 library error code table)
+            if test $ret_m -eq "6";then
+                echo "AD-join Failed with Invalid Cerendtials."
+                echo "Set samba as share as Domain Join will also fail."
+                set_samba_as_share
+                ${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+            else
+            if [ x"$ret_m" != x"0" ] ; then
+                JOINED_AD_DOMAIN=0
+                echo "AD-Join failed, try joining NT domain"
+                sed -i -e '/client NTLMv2 auth=/ c\client NTLMv2 auth=Yes' ${SAMBA_CONF_DIR}/smb.conf
+                #set date back to the original
+                #date -s "$org_date"
+                echo "ret_m after AD join()"$ret_m
+                domain_join $1 $2 $3 $4 $5
+                ret_m=$?
+                if [ x"$ret_m" != x"0" ] ; then
+                    echo "NT Domain-Join failed too, set samba as share"
+                    set_samba_as_share
+                    ${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB "CAN'T CONNECT TO THE DOMAIN"&
+                else
+                    echo "Successfullt joined NT domain"
+                    ${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+                fi
+            else
+                JOINED_AD_DOMAIN=1;
+                echo "Successfully joined AD domain"
+                ${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+            fi
+        fi
+        else
+            ${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+            sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf
+        fi
+        ;;
+        6)
+        echo "Guest Logon Disabled..."
+        ${SAMBA_BIN}/alnetmsglog setxpath Network/Status/SMB ""&
+        sed -i -e '/map to guest=/ c\map to guest=never' ${SAMBA_CONF_DIR}/smb.conf
+        sed -i -e '/guest only=/ c\guest only=yes' ${SAMBA_CONF_DIR}/smb.conf
+        DOMAIN_NNAME=`grep "workgroup" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'`
+        echo "Status-------> Writing workgroup info for share $DOMAIN_NNAME to panel for level 6"
+        ${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/currentStatus ${DOMAIN_NNAME}&
+        ${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/adsName workgroup &
+        echo "adding user to smbpasswd file.."
+        if [ -z $3 ] || [ -z $4 ];then
+                echo "No username and password argument is supplied"
+                return 1
+        else
+                GuestUsername=`echo $3|cut -c3-`
+                GuestPassword=`echo $4|cut -c3-`
+                if [ -z $GuestUsername ];then
+                        echo "Username is empty, guest logon cannot be disabled."
+                        return 1
+                else
+                        #default passdb backends require the user to already exist in the system password file (usually /etc/passwd),
+                        #else the request to add the user will fail. so adding user to /etc/passwd file without creating home directory for that user
+                        useradd -u 9999 -M $GuestUsername
+                        #adding user to smbpasswd file.(If usert already exists then it will considered as password change request.
+                        echo -e "$GuestPassword\n$GuestPassword" | ${SAMBA_BIN}/smbpasswd -a -s $GuestUsername
+                fi
+        fi
+        ;;
+
+	0)
+		#if [ $domainJoin -eq 0 ];then
+		#case 0->WorkGroup
+		echo "WorkGroup Level in Progress. ...."
+		${SAMBA_BIN}/alnetmsglog setxpathandnotify Network/Status/SMB ""&
+		sed -i -e '/map to guest=/ c\map to guest=bad user' ${SAMBA_CONF_DIR}/smb.conf        
+		DOMAIN_NNAME=`grep "workgroup" ${SMB_CONF_FILE} | awk -F"=" '{ print $2 }'`
+		echo "Status-------> Writing workgroup info for share $DOMAIN_NNAME to panel for level 0"
+		${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/currentStatus ${DOMAIN_NNAME}&
+		${SAMBA_BIN}/alnetmsglog setxpath Network/Protocols/SMB/adsName workgroup &
+	;;
+	esac
+
+	start_samba
+
+	#15102015: HDD Access:
+	#Samba logging will start if service is restarted in sleep mode.
+	# To avoid this check the shared memory value of SHM_NET_PM_LOGGING
+	# and if value is 0 execute smbcontrol command to stop logging else don't do anything
+	${EB2}/bin/shmemutil SHM_NET_PM_LOGGING getint
+	MFPSLEEP_VAL=$?
+	if [ $MFPSLEEP_VAL == "0" ]; then
+		sleep 1 # sleep here because all 3 processes were not ready immediate after start(2-smbd and 1-nmbd)
+		#echo "MFP is in sleep state and samba service is restarted, don't do samba logging"
+		smbcontrol all debug 0
+	fi
+
+	#20171406: Feedback from L6.022/L6.032FC: restart samba incase smb ports are not listening
+	PRIPORTSTATE=`netstat -plan | grep smbd | awk -v i=1 -v j=4 'FNR == i {print $j}'`
+        PRIMARY_PORT=0.0.0.0:139
+        PORTCOUNT=0
+        while [ x"$PRIPORTSTATE" != x"$PRIMARY_PORT" ]
+        do
+		netstat -plan | grep smbd
+		if test $PORTCOUNT -le 5
+		then
+			PRIPORTSTATE=`netstat -plan | grep smbd | awk -v i=1 -v j=4 'FNR == i {print $j}'`
+			if [ x"$PRIPORTSTATE" != x"$PRIMARY_PORT" ]; then
+				echo -n "restarting samba at port listen failure....."
+				killall -v smbd
+                        	${SAMBA_BIN}/smbd -s ${SAMBA_CONF_DIR}/smb.conf -D
+                        	((PORTCOUNT=PORTCOUNT+1))
+				sleep 5 # sleep untill netstat displays ports
+			else
+				break
+			fi
+		else
+			echo -n "samba port: 5 counts are done....."
+			netstat -plan | grep smbd
+			break
+		fi
+	done
+
+	#Manoj 20100913 Addind support for panel display of samba current status
+	#LINK_SAMBA_PID=`ps -elf | grep -i alSambaLinkCheck |  grep -v grep | awk '{print $4}'`
+	#if [ -z $LINK_SAMBA_PID ]; then
+	#	echo "Starting samba link check"
+	#	${SAMBA_BIN}/alSambaLinkCheck &
+	#fi
+	echo 
+	;;
+'stop')
+	echo -n "stopping samba ..."
+	killall -v smbd
+	killall -v nmbd
+#	killall -v winbindd
+	COUNT=0 
+	PID=`pidof -s smbd`
+	while [ "$PID" != "" ] 
+	do
+		if test $COUNT -le 10 
+		then
+			echo "$COUNT Waiting for smbd shutdown in Stop"
+			PID=`pidof -s smbd`
+			if [ $PID ]; then
+				killall -v smbd
+				killall -v nmbd
+			#	killall -v winbindd
+				((COUNT=COUNT+1))
+				sleep 1
+			fi
+		else
+			break	
+		fi
+	done
+	echo "Killing samba force -9"
+	killall -9 -v smbd
+	killall -9 -v nmbd
+#	killall -9 -v winbindd	
+	RETVAL=$?
+	#Manoj 20100913 Addind support for panel display of samba current status
+	#LINK_SAMBA_PID=`ps -elf | grep -i alSambaLinkCheck |  grep -v grep | awk '{print $4}'`
+	#if [ $LINK_SAMBA_PID ]; then
+	#	echo "Killing samba link check"
+	#	killall alSambaLinkCheck
+	#fi
+	echo
+	;;
+'restart'|'reload')
+	$0 stop
+	$0 start $2 $3 $4 $5
+	RETVAL=$?
+	;;
+'status')
+	RETVAL=0
+	PID=`pidof -s smbd`
+	if [ $PID ]; then
+		RETVAL=1
+		echo "running"
+	else
+		echo "stopped"
+	fi
+	;;
+	
+  *)
+	echo "Usage: smb {start|stop|restart|status} -a{1} -u{user} -p{pass}"
+	exit 1
+esac
+
+exit $RETVAL
