@@ -438,7 +438,7 @@ folders=(
 #$ROOT_DIR/dev/AL/Network/NMO/ipp
 #$ROOT_DIR/dev/AL/Network/NMO/snmp
 #$ROOT_DIR/dev/AL/Network/NMO/webserver
-#$ROOT_DIR/dev/AL/Network/NMO/smb
+$ROOT_DIR/dev/AL/Network/NMO/smb
 #$ROOT_DIR/dev/AL/Network/NMO/8021X
 #$ROOT_DIR/dev/AL/Network/NMO/ipsec
 #$ROOT_DIR/dev/AL/Network/NMO/FTPServer
