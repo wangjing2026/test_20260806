@@ -1,0 +1,2461 @@
+<!--<pre>
+  *-------------------------------------------------------------------------------
+
+  *
+
+  *-------------------------------------------------------------------------------
+  * File: Network.html
+  *-------------------------------------------------------------------------------
+  * DESCRIPTION:
+  *
+  * AUTHOR:        Sangeetha,Durgaprasad
+  * PROJECT:		[TOPACCESS]
+  *
+  * Date Of Creation	: 15/feb/2007
+  * Version No.		: 1.0
+  *-------------------------------------------------------------------------------
+
+  * DEPENDENCIES
+  *
+  *-------------------------------------------------------------------------------
+  * </pre>
+
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Top Access : Network</title>
+    <LINK REL="stylesheet" TYPE="text/css" HREF="/styles/style.css">
+    <script src="/js/jquery.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="/js/WindowOperations.js"></script>
+    <script language="javascript" type="text/javascript" src ="/js/TopAccessUtil.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/AjaxReqRespHandler.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/Cookies.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/Firewall.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/NetworkMap.js"></script>
+    <script language="javascript" type="text/javascript">
+        var isEFI = false;
+        if(top.fnGetCookie("EFICtrlInstalled") == "1"){
+            isEFI = true;
+        }
+        requestTree = "Network";
+        gblSETRequestXMLArray = ["<SecurityConfiguration><IPFirewall></IPFirewall></SecurityConfiguration>","<DiagnosticMode><Category><Mode>08</Mode><MainCode><Code>9060</Code></MainCode></Category></DiagnosticMode>"];
+        var ipsecExists = top.fnTrackCookie("LICENSE_SETTINGS","GET","IPSEC");
+        if(!isEFI && ipsecExists == "")  //Ipsec will be disabled if EFI is Installed
+            glbContentWebServerCmdArray = ["<GetFirewallRuleIds><commandNode>SecurityConfiguration/IPFirewall</commandNode></GetFirewallRuleIds>","<LicenseEnableCheck><commandNode>LicenseMgmt/Licenses</commandNode><Params><FunctionName contentType='Value'>IPSEC</FunctionName></Params></LicenseEnableCheck>","<GetDiagnosticMode><commandNode>DiagnosticMode</commandNode></GetDiagnosticMode>"];
+        else
+            glbContentWebServerCmdArray = ["<GetFirewallRuleIds><commandNode>SecurityConfiguration/IPFirewall</commandNode></GetFirewallRuleIds>","<GetDiagnosticMode><commandNode>DiagnosticMode</commandNode></GetDiagnosticMode>"];
+        gblGETRequestXMLArray = ["<SecurityConfiguration><IPFirewall/></SecurityConfiguration>","<Network><Status><state/></Status><Protocols/><Services/><Adapters><Wire/><Ethernet/></Adapters></Network>","<Controller><Settings><PowerSettings><EnableSuperSleep></EnableSuperSleep></PowerSettings><AdminSystemSettings><EMail><SendMaxSize/></EMail></AdminSystemSettings></Settings><Applications><Stage2></Stage2></Applications></Controller>","<DiagnosticMode></DiagnosticMode>"];
+        gblBoolHandleRespArray = [true];
+        gblHashMapArray = [Network_Xpath_Widget_HashTable];
+        calledFromPage = "Network";
+        var glEnable = fnGetLocaleString("100604","Enable");
+        var glDisable = fnGetLocaleString("100526","Disable");
+        var glPermit = fnGetLocaleString("101376","Permit");
+        var glDeny = fnGetLocaleString("102294","Deny");
+        var glFilter = fnGetLocaleString("100744","Filter");
+        var glGoToTop = fnGetLocaleString("100861","Go to top of this page");
+        function fnnOpenNewWindow(temp) {
+            fnnOpenInNewWindow(temp)
+        }
+        function fnnJumpTop() {
+        }
+        function fnnFlushConnection() {
+            var  lbresult = confirm(fnGetLocaleString("100206","Are you Sure you want to flush the IPSec Connections ?"));
+            if (lbresult ==  false) {
+                return ;
+            }else {
+                fnFlushConnections();
+            }
+
+        }
+        function fnnOnload(){
+            if(isEFI){
+                showDivs("DIV_LDAP_LINK~DIV_DNS_LINK~DIV_HTTP_LINK~DIV_SMTPCLIENT_LINK~DIV_SMTPSERVER_LINK~DIV_POP3_LINK~DIV_FTP_SERVER_LINK~DIV_WEBSERV_LINK");
+                showDivs("HR_DIV");
+                showDivs("DIV_LDAP~DIV_DNS~DIV_HTTP~DIV_SMTPCLIENT~DIV_SMTPSERVER~DIV_POP3~DIV_FTPSERVER~DIV_WEBSERVICE");
+            }else{
+                if(top.gblDeviceModelId == "WEISS-LL"){
+                    showDivs("DIV_TCP_LINK~DIV_FILTER_LINK~DIV_IPV6_LINK~DIV_IPX_LINK~DIV_BONJOUR_LINK~DIV_LDAP_LINK~DIV_DNS_LINK~DIV_DDNS_LINK~DIV_SMB_LINK~DIV_NETWARE_LINK~DIV_HTTP_LINK~DIV_SMTPCLIENT_LINK~DIV_SMTPSERVER_LINK~DIV_POP3_LINK~DIV_FTP_CLIENT_LINK~DIV_FTP_SERVER_LINK~DIV_SLP_LINK~DIV_SNMP_LINK~DIV_WEBSERV_LINK~DIV_LLTD_LINK~DIV_WAKEUP_LINK");
+                    showDivs("HR_DIV");
+                    showDivs("DIV_TCP~DIV_FIREWALL~DIV_IPV6~DIV_IPX~DIV_BONJOUR~DIV_LDAP~DIV_DNS~DIV_DDNS~DIV_SMB~DIV_NETWARE~DIV_HTTP~DIV_SMTPCLIENT~DIV_SMTPSERVER~DIV_POP3~DIV_FTPCLIENT~DIV_FTPSERVER~DIV_SLP~DIV_SNMP~DIV_WEBSERVICE~DIV_LLTD~DIV_WAKEUP");
+                }else{
+                    showDivs("DIV_TCP_LINK~DIV_FILTER_LINK~DIV_IPV6_LINK~DIV_IPX_LINK~DIV_APPLE_LINK~DIV_BONJOUR_LINK~DIV_LDAP_LINK~DIV_DNS_LINK~DIV_DDNS_LINK~DIV_SMB_LINK~DIV_NETWARE_LINK~DIV_HTTP_LINK~DIV_SMTPCLIENT_LINK~DIV_SMTPSERVER_LINK~DIV_POP3_LINK~DIV_FTP_CLIENT_LINK~DIV_FTP_SERVER_LINK~DIV_SLP_LINK~DIV_SNMP_LINK~DIV_WEBSERV_LINK~DIV_LLTD_LINK~DIV_WAKEUP_LINK");
+                    showDivs("HR_DIV");
+                    showDivs("DIV_TCP~DIV_FIREWALL~DIV_IPV6~DIV_IPX~DIV_APPLE~DIV_BONJOUR~DIV_LDAP~DIV_DNS~DIV_DDNS~DIV_SMB~DIV_NETWARE~DIV_HTTP~DIV_SMTPCLIENT~DIV_SMTPSERVER~DIV_POP3~DIV_FTPCLIENT~DIV_FTPSERVER~DIV_SLP~DIV_SNMP~DIV_WEBSERVICE~DIV_LLTD~DIV_WAKEUP");
+                }
+                showDivs("DNS_PRI_IPV6~DNS_SEC_IPV6");
+                showDivs("WEBSERV_SSL~WEBSERV_FRIENDLYNAME~WEBSERV_PRINT~WEBSERV_PRINTERNAME~WEBSERV_PRINTINFO~WEBSERV_AUTHSCAN");
+                if (top.gblDeviceModelId == "STHELENS" || top.gblDeviceModelId == "MOSEL" )
+                    document.getElementById("ID_SUPER_SLEEP").style.display = "none";
+                else
+                    document.getElementById("ID_SUPER_SLEEP").style.display = "";
+            }
+        }
+    </script>
+</head>
+<BODY class=clsMargin bgColor="white" onload="fnnOnload(); InitiateServerRequest('SETCMDGET');" onUnload="fnnCloseChildWindows();">
+<div id="NetworkDivId" style="display:block;">
+<FORM name="frmNetwork">
+<input type="hidden" id="IPV6CmdXml" value="" >
+<a name="TOP">
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="3.5" WIDTH="800">
+    <TR id="DIV_TCP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#TCPIP" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101804","TCP/IP"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_FILTER_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#Firewall" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("103223","Filtering"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_IPV6_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#IPv6" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100978","IPv6"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_IPX_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#IPXSPX" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100981","IPX/SPX"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_APPLE_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#APPLETALK" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100192","Apple Talk"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_BONJOUR_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#RENDEZVOUS" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100266","Bonjour"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_LDAP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#LDAP" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101050","LDAP Session"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_DNS_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#DNS" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100533","DNS Session"));</script></A></TD>
+    </TR>
+    <TR id="DIV_DDNS_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#DDNS" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100446","DDNS Session"));</script></A></TD>
+    </TR>
+    <TR id="DIV_SMB_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#SMB" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101733","SMB Session"));</script></A></TD>
+    </TR>
+    <TR id="DIV_NETWARE_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#NETWARE" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101223","NetWare Session"));</script></A></TD>
+    </TR>
+    <TR id="DIV_HTTP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#HTTP" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100892","HTTP Network Service"));</script></A></TD>
+    </TR>
+    <TR id="DIV_SMTPCLIENT_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#SMTPCLIENT" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101738","SMTP Client"));</script></A></TD>
+    </TR>
+    <TR id="DIV_SMTPSERVER_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#SMTPSERVER" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101740","SMTP Server"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_POP3_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#POP3" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101434","POP3 Network Service"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_FTP_CLIENT_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#FTPCLIENT" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100778","FTP Client"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_FTP_SERVER_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#FTPSERVER" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100780","FTP Server"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_SLP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#SLPSESSION" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101729","SLP Session"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_SNMP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#SNMP" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101742","SNMP Network Service"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_WEBSERV_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#WEBSERVICESETTING" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("102012","Web Services Setting"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_LLTD_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#LLTDSESSION" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("101075","LLTD Session"));</script></A>
+        </TD>
+    </TR>
+    <TR id="DIV_WAKEUP_LINK" style="display:none;">
+        <TD CLASS="" COLSPAN=2>
+            <A href="#WAKEUPSETTING" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("103335","Wake Up Setting"));</script></A>
+        </TD>
+    </TR>
+	<TR id="DIV_IPSec_LINK">
+        <TD CLASS="" COLSPAN=2>
+            <span id="IPSEC_LINKID" style="display:none">
+                    <A href="#IPSecurity" class=clsBody ><script type="text/javascript">document.write(fnGetLocaleString("100958","IP Security"));</script></A>
+            </span>    
+        </TD>
+    </TR>
+</TABLE>
+<div id="HR_DIV" style="display:none;">
+<BR>
+<HR>
+<BR>
+</div>
+<div style="display:none;">
+<h2>invisible div</h2>
+    <SELECT NAME="TCPIP_ether" SIZE=1 onchange="setValue('TCPIP_ether_id',getText('TCPIP_ether'))">
+        <script type="text/javascript">
+
+            var modelID = top.gblDeviceModelId;
+            var modelType = top.deviceModelType;
+
+            if(modelType=="H160" ||modelType=="H161"||modelType=="H162" || modelType=="H163" || modelType=="H164" || modelType=="H165" || modelType ==  "H201"){  // only Loire1
+                if(top.gblStorageType == "HDD"){
+                    document.write('<option value="AUTO">'+fnGetLocaleString("103994","AUTO(-100MB)"));
+                    document.write('<option value="AUTO-1000">'+fnGetLocaleString("103995","AUTO(-1000MB)"));
+                }else if(top.gblStorageType == "SSD" || top.gblStorageType == "DeviceMemory"){
+                    document.write('<option value="AUTO">'+fnGetLocaleString("100232","AUTO"));
+                }
+            }else if(modelID == "ALABAMA"){            // both Alabama1 and Alabama2
+                document.write('<option value="AUTO">'+fnGetLocaleString("103994","AUTO(-100MB)"));
+                document.write('<option value="AUTO-1000">'+fnGetLocaleString("103995","AUTO(-1000MB)"));
+            }else if(modelID == "WEISS-L" || modelID == "WEISS-LL" || modelID == "WEISS-H" || modelID == "MOSEL" ||modelID == "STHELENS" || modelType == "H330" || modelType == "H331" || modelType == "H332" || modelType == "H333" || modelType == "H334" || modelType == "H335"){ //weiss, st helens, mosel & Loire2
+                    document.write('<option value="AUTO">'+fnGetLocaleString("103994","AUTO (-100MB)"));
+                    document.write('<option value="AUTO-1000">'+fnGetLocaleString("103995","AUTO (-1000MB)"));
+            }else{
+                document.write('<option value="AUTO">'+fnGetLocaleString("100232","AUTO"));
+            }
+             if(!(modelID == "WEISS-L" || modelID == "WEISS-LL" || modelID == "WEISS-H" || modelID == "MOSEL" || modelID == "STHELENS" || modelType == "H330" || modelType == "H331" || modelType == "H332" || modelType == "H333" || modelType == "H334" || modelType == "H335" || modelType == "H320" || modelType == "H321" || modelType == "H322" || modelType == "H323")){ //not for weiss, st helens, mosel alabama2 & Loire2
+                    document.write('<option value="10HALF">'+fnGetLocaleString("100011","10BASE HALF"));
+                }
+        </script>
+        <option value="10FULL"><script type="text/javascript">document.write(fnGetLocaleString("100010","10BASE FULL"));</script>
+        <script type="text/javascript">
+                if(!(modelID == "WEISS-L" || modelID == "WEISS-LL" || modelID == "WEISS-H" || modelID == "MOSEL" || modelID == "STHELENS" || modelType == "H330" || modelType == "H331" || modelType == "H332" || modelType == "H333" || modelType == "H334" || modelType == "H335" || modelType == "H320" || modelType == "H321" || modelType == "H322" || modelType == "H323")){  //not for weiss, st helens, mosel alabama2 & Loire2
+                    document.write('<option value="100HALF">'+fnGetLocaleString("100005","100BASE HALF"));
+                }
+            </script>
+        <option value="100FULL"><script type="text/javascript">document.write(fnGetLocaleString("100004","100BASE FULL"));</script>
+        <script type="text/javascript">
+            if(!((modelType=="H160" || modelType=="H161"|| modelType=="H162" || modelType=="H163" || modelType=="H164" || modelType=="H165" || modelType ==  "H201") &&(top.gblStorageType == "SSD" || top.gblStorageType == "DeviceMemory"))){
+                document.write('<option value="1000FULL">'+fnGetLocaleString("103996","1000BASE FULL"));
+            }
+        </script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_AddressMode" SIZE=1 onchange="setValue('TCPIP_AddressMode_id',getText('TCPIP_AddressMode'))">
+        <option value="Static"><script type="text/javascript">document.write(fnGetLocaleString("101779","Static IP"));</script>
+        <option value="dhcp"><script type="text/javascript">document.write(fnGetLocaleString("100578","Dynamic"));</script>
+        <option value="NoAutoIP"><script type="text/javascript">document.write(fnGetLocaleString("101242","No AutoIP"));</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_DomainName" SIZE=1 onchange="setValue('TCPIP_DomainName_id',getText('TCPIP_DomainName'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_DomainServerAddress" SIZE=1 onchange="setValue('TCPIP_DomainServerAddress_id',getText('TCPIP_DomainServerAddress'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_WINS" SIZE=1 onchange="setValue('TCPIP_WINS_id',getText('TCPIP_WINS'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_SMTP" SIZE=1 onchange="setValue('TCPIP_SMTP_id',getText('TCPIP_SMTP'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_POP3" SIZE=1 onchange="setValue('TCPIP_POP3_id',getText('TCPIP_POP3'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_SNTP" SIZE=1 onchange="setValue('TCPIP_SNTP_id',getText('TCPIP_SNTP'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="TCPIP_IPConflictDetect" SIZE=1 onchange="setValue('TCPIP_IPConflictDetect_id',getText('TCPIP_IPConflictDetect'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="IPv6_Enable" SIZE=1 onchange="setValue('IPv6_Enable_id',getText('IPv6_Enable'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="IPv6_LLMNR" SIZE=1 onchange="setValue('IPv6_LLMNR_id',getText('IPv6_LLMNR'))">
+       <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+       <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <input type="text" name="IPv6_Selected" value="">
+    <input type="checkbox" name="IPv6_Manual_DHCP" value=1>
+    <input type="checkbox" name="IPv6_Stateless__DHCPIP" value="1">
+    <input type="checkbox" name="IPv6_Stateless_DHCPOptions" value="true">
+    <input type="checkbox" name="IPv6_Stateless_FQDNOption" value="true">
+    <select name="IPv6_Stateless_UpdateMethod">
+        <option value="Server"><script type="text/javascript">document.write(fnGetLocaleString("103381","Server"));</script></option>
+        <option value="Client"><script type="text/javascript">document.write(fnGetLocaleString("103382","Client"));</script></option>
+    </select>
+    <input type="checkbox" name="IPv6_Stateful__DHCPIP" value="1">
+    <input type="checkbox" name="IPv6_Stateful__DHCP_Options" value="true">
+    <input type="checkbox" name="IPv6_Stateful_FQDNOption" value="true">
+    <select name="IPv6_Stateful_UpdateMethod">
+        <option value="Server"><script type="text/javascript">document.write(fnGetLocaleString("103381","Server"));</script></option>
+        <option value="Client"><script type="text/javascript">document.write(fnGetLocaleString("103382","Client"));</script></option>
+    </select>
+    <SELECT NAME="IPXSPX_Enable" SIZE=1 onchange="setValue('IPXSPX_Enable_id',getText('IPXSPX_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="IPXSPX_FrameType" SIZE=1 onchange="setValue('IPXSPX_FrameType_id',getText('IPXSPX_FrameType'))">
+        <option value="Auto" ><script type="text/javascript">document.write(fnGetLocaleString("100239","Auto Sense"));</script>
+        <option value="802.3" ><script type="text/javascript">document.write(fnGetLocaleString("100897","IEEE 802.3"));</script>
+        <option value="EtherII" ><script type="text/javascript">document.write(fnGetLocaleString("100680","Ethernet II"));</script>
+        <option value="SNAP" ><script type="text/javascript">document.write(fnGetLocaleString("100898","IEEE 802.3 Snap"));</script>
+        <option value="802.2" ><script type="text/javascript">document.write(fnGetLocaleString("100896","IEEE 802.2"));</script>
+    </SELECT>
+    <SELECT NAME="IPXSPX_ActualFrameType" SIZE=1 onchange="setValue('IPXSPX_ActualFrameType_id',getText('IPXSPX_ActualFrameType'))">
+        <option value="" >
+        <option value="Auto" ><script type="text/javascript">document.write(fnGetLocaleString("100239","Auto Sense"));</script>
+        <option value="802.3" ><script type="text/javascript">document.write(fnGetLocaleString("100897","IEEE 802.3"));</script>
+        <option value="EtherII" ><script type="text/javascript">document.write(fnGetLocaleString("100680","Ethernet II"));</script>
+        <option value="SNAP" ><script type="text/javascript">document.write(fnGetLocaleString("100898","IEEE 802.3 Snap"));</script>
+        <option value="802.2" ><script type="text/javascript">document.write(fnGetLocaleString("100896","IEEE 802.2"));</script>
+    </SELECT>
+
+    <SELECT NAME="APPLETALK_Enable" SIZE=1 onchange="setValue('APPLETALK_Enable_id',getText('APPLETALK_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="BONJOUR_Enable" SIZE=1 onchange="setValue('BONJOUR_Enable_id',getText('BONJOUR_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="LDAP_Enable" SIZE=1 onchange="setValue('LDAP_Enable_id',getText('LDAP_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="DNS_Enable" SIZE=1 onchange="setValue('DNS_Enable_id',getText('DNS_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="DDNS_Enable" SIZE=1 onchange="setValue('DDNS_Enable_id',getText('DDNS_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="DDNS_SecurityMethod" SIZE=1 onchange="setValue('DDNS_Security',getText('DDNS_SecurityMethod'))">
+        <option value="None"><script type="text/javascript">document.write(fnGetLocaleString("101247","None"));</script>
+        <option value="GSS-TSIG"><script type="text/javascript">document.write(fnGetLocaleString("100873","GSS-TSIG"));</script>
+        <option value="TSIG"><script type="text/javascript">document.write(fnGetLocaleString("101936","TSIG"));</script>
+        <option value="SIG(0)"><script type="text/javascript">document.write(fnGetLocaleString("101719","SIG(0)"));</script>
+    </SELECT>
+
+    <SELECT NAME="LDAP_SSL" SIZE=1 onchange="setValue('LDAP_SSL_id',getText('LDAP_SSL'))">
+        <option value=Disable ><script type="text/javascript">document.write(glDisable);</script>
+        <option value=WithImportedCACertificate ><script type="text/javascript">document.write(fnGetLocaleString("102003","Verify with imported CA certification(s)"));</script>
+        <option value=WithNoImportedCACertificate ><script type="text/javascript">document.write(fnGetLocaleString("100107","Accept all certificates without CA"));</script>
+    </SELECT>
+
+    <SELECT NAME="LDAP_SearchMethod" SIZE=1 onchange="setValue('LDAP_SearchMethod_id',getText('LDAP_SearchMethod'))">
+        <option value="PartialMatch"><script type="text/javascript">document.write(fnGetLocaleString('101343',"Partial match"));</script>
+        <option value="PrefixMatch"><script type="text/javascript">document.write(fnGetLocaleString('101447',"Prefix match"));</script>
+        <option value="SuffixMatch"><script type="text/javascript">document.write(fnGetLocaleString('101796',"Suffix match"));</script>
+        <option value="FullMatch"><script type="text/javascript">document.write(fnGetLocaleString('100782',"Full match"));</script>
+    </SELECT>
+
+    <SELECT NAME="SMB_Enable" SIZE=1 onchange="setValue('SMB_Enable_id',getText('SMB_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="SMB_Restriction" SIZE=1 onchange="setValue('SMB_Restriction_id',getText('SMB_Restriction'))">
+        <option value="0"><script type="text/javascript">document.write(fnGetLocaleString("101247","None"));</script>
+        <option value="1"><script type="text/javascript">document.write(fnGetLocaleString("103334","Print Share"));</script>      <!--dummy enum for UI-->
+        <option value="2"><script type="text/javascript">document.write(fnGetLocaleString("103494","File Share"));</script>       <!--dummy enum for UI-->
+    </SELECT>
+    <SELECT NAME="SMB_EnableXpath" SIZE=1 >
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="SMB_FileShare_Enable" SIZE=1 >
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="SMB_Print_Enable" SIZE=1 >
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <textarea NAME="SMB_Pwd" ></textarea>
+    <SELECT NAME="SMB_GuestLogon" SIZE=1 onchange="setValue('SMB_GuestLogon_id',getText('SMB_GuestLogon'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <textarea NAME="SMB_Password" id ="SMB_Password"></textarea>
+
+    <SELECT NAME="SMB_Server" SIZE=1 onchange="setValue('SMB_Server_id',getText('SMB_Server'))">
+        <option value="auto"><script type="text/javascript">document.write(fnGetLocaleString("100899","If client agrees,digital signature is done for the communication."));</script>
+        <option value="mandatory"><script type="text/javascript">document.write(fnGetLocaleString("100518","Digital signature is always done for the communication on the server side."));</script>
+        <option value="disabled"><script type="text/javascript">document.write(fnGetLocaleString("100520","Digital signature isn't done for the communication for the server."));</script>
+    </SELECT>
+
+     <SELECT NAME="SMB_Client" SIZE=1 onchange="setValue('SMB_Client_id',getText('SMB_Client'))">
+        <option value="auto"><script type="text/javascript">document.write(fnGetLocaleString("100900","If server agrees,digital signature is done for the communication."));</script>
+        <option value="mandatory"><script type="text/javascript">document.write(fnGetLocaleString("100517","Digital signature is always done for the communication on the client side."));</script>
+        <option value="disabled"><script type="text/javascript">document.write(fnGetLocaleString("100519","Digital signature isn't done for the communication for the client."));</script>
+    </SELECT>
+   <SELECT NAME="NETWARE_Enable" SIZE=1 onchange="setValue('NETWARE_Enable_id',getText('NETWARE_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="NETWARE_Bindery" SIZE=1 onchange="setValue('NETWARE_Bindery_id',getText('NETWARE_Bindery'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="NETWARE_NDS" SIZE=1 onchange="setValue('NETWARE_NDS_id',getText('NETWARE_NDS'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="HTTP_Enabled" SIZE=1 onchange="setValue('HTTP_Enabled_id',getText('HTTP_Enabled'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="HTTP_SSLEnabled" SIZE=1 onchange="setValue('HTTP_SSLEnabled_id',getText('HTTP_SSLEnabled'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPClient_Enable" SIZE=1 onchange="setValue('SMTPClient_Enable_id',getText('SMTPClient_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPClient_EnableSSL" SIZE=1 onchange="setValue('SMTPClient_EnableSSL_id',getText('SMTPClient_EnableSSL'))">
+        <option value="Disable"><script type="text/javascript">document.write(glDisable);</script>
+        <option value="VerifyImportedCert"><script type="text/javascript">document.write(fnGetLocaleString("102003","Verify with imported CA certification(s)"));</script>     
+        <option value="AcceptCertWithNoCA"><script type="text/javascript">document.write(fnGetLocaleString("100107","Accept all certificates without CA"));</script>     
+    </SELECT>
+
+    <SELECT NAME="SMTPClient_SSLTLS" SIZE=1 onchange="setValue('SMTPClient_SSLTLS_id',getText('SMTPClient_SSLTLS'))">
+        <option value="STARTTLS"><script type="text/javascript">document.write(fnGetLocaleString("101777","STARTTLS"));</script>
+        <option value="OverSSL"><script type="text/javascript">document.write(fnGetLocaleString("101321","Over SSL"));</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPClient_POPSMTP" SIZE=1 onchange="setValue('SMTPClient_POPSMTP_id',getText('SMTPClient_POPSMTP'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPClient_Authentication" SIZE=1 onchange="setValue('SMTPClient_Authentication_id',getText('SMTPClient_Authentication'))">
+        <option value="None" ><script type="text/javascript">document.write(glDisable);</script>
+        <option value="Plain" ><script type="text/javascript">document.write(fnGetLocaleString("103384","Plain"));</script>
+        <option value="Login" ><script type="text/javascript">document.write(fnGetLocaleString("103385","Login"));</script>
+        <option value="CramMD5" ><script type="text/javascript">document.write(fnGetLocaleString("100391","CRAM-MD5"));</script>
+        <option value="DigestMD5" ><script type="text/javascript">document.write(fnGetLocaleString("100515","Digest-MD5"));</script>
+        <option value="Kerberos" ><script type="text/javascript">document.write(fnGetLocaleString("101026","Kerberos"));</script>
+        <option value="NTLM" ><script type="text/javascript">document.write(fnGetLocaleString("101266","NTLM(IWA)"));</script>
+        <option value="Auto" ><script type="text/javascript">document.write(fnGetLocaleString("100232","Auto"));</script>
+    </SELECT>
+
+    <textarea  NAME="SMTPClient_Password"></textarea>
+
+
+    <SELECT NAME="SMTPServer_Enable" SIZE=1 onchange="setValue('SMTPServer_Enable_id',getText('SMTPServer_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPServer_Gateway" SIZE=1 onchange="setValue('SMTPServer_Gateway_id',getText('SMTPServer_Gateway'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPServer_Security" SIZE=1 onchange="setValue('SMTPServer_Security_id',getText('SMTPServer_Security'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SMTPServer_Print" SIZE=1 onchange="setValue('SMTPServer_Print_id',getText('SMTPServer_Print'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="POP3_Enable" SIZE=1 onchange="setValue('POP3_Enable_id',getText('POP3_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="POP3_SSL" SIZE=1 onchange="setValue('POP3_SSL_id',getText('POP3_SSL'))">
+        <option value="Disable" ><script type="text/javascript">document.write(glDisable);</script>
+        <option value="VerifyImportedCert" ><script type="text/javascript">document.write(fnGetLocaleString("102003","Verify with imported CA certification(s)"));</script>
+        <option value="AcceptCertWithNoCA" ><script type="text/javascript">document.write(fnGetLocaleString("100107","Accept all certificates without CA"));</script>
+    </SELECT>
+
+    <SELECT NAME="POP3_Auth" SIZE=1 onchange="setValue('POP3_Auth_id',getText('POP3_Auth'))">
+        <option value="None" ><script type="text/javascript">document.write(glDisable);</script>
+        <option value="NTLM" ><script type="text/javascript">document.write(fnGetLocaleString("101267","NTLM/SPA"));</script>
+        <option value="Kerberos" ><script type="text/javascript">document.write(fnGetLocaleString("101026","Kerberos"));</script>
+    </SELECT>
+
+   <SELECT NAME="POP3_LoginType" SIZE=1 onchange="setValue('POP3_LoginType_id',getText('POP3_LoginType'))">
+        <option value="Auto" ><script type="text/javascript">document.write(fnGetLocaleString("100232","Auto"));</script>
+        <option value="POP3" ><script type="text/javascript">document.write(fnGetLocaleString("101432","POP3"));</script>
+        <option value="APOP" ><script type="text/javascript">document.write(fnGetLocaleString("100191","APOP"));</script>
+    </SELECT>
+
+    <textarea NAME="POP3_Password" ></textarea>
+
+    <SELECT NAME="FTPSERVER_Enable" SIZE=1 onchange="setValue('FTPSERVER_Enable_id',getText('FTPSERVER_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="FTPSERVER_SSL" SIZE=1 onchange="setValue('FTPSERVER_SSL_id',getText('FTPSERVER_SSL'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="SNMP_Enable" SIZE=1 onchange="setValue('SNMP_Enable_id',getText('SNMP_Enable'));">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="SNMP_EnableV3" SIZE="1" onchange="setValue('SNMP_EnableV3_id',getText('SNMP_EnableV3'))">
+        <option value=1 ><script type="text/javascript">document.write(glEnable);</script>
+        <option value=0 ><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="SNMP_EnableV3Trap" SIZE="1" onchange="setValue('SNMP_EnableV3Trap_id',getText('SNMP_EnableV3Trap'))">
+        <option value=1 ><script type="text/javascript">document.write(glEnable);</script></option>
+        <option value=0 ><script type="text/javascript">document.write(glDisable);</script></option>
+    </SELECT>
+    <SELECT NAME="SNMP_V3TrapAuthProtocol" SIZE="1" onchange="setValue('SNMP_V3TrapAuthProtocol_id',getText('SNMP_V3TrapAuthProtocol'))">
+		<option value=MD5 ><script type="text/javascript">document.write(fnGetLocaleString("100882","HMAC-MD5"));</script></option>
+        <option value=SHA ><script type="text/javascript">document.write(fnGetLocaleString("100883","HMAC-SHA"));</script></option>
+    </SELECT>
+    <SELECT NAME="SNMP_V3TrapPrivacyProtocol" SIZE="1" onchange="setValue('SNMP_V3TrapPrivacyProtocol_id',getText('SNMP_V3TrapPrivacyProtocol'))">
+		<option value=None ><script type="text/javascript">document.write(fnGetLocaleString("101247","None"));</script></option>
+        <option value=DES ><script type="text/javascript">document.write(fnGetLocaleString("100314","CBC-DES"));</script></option>
+        <option value=AES ><script type="text/javascript">document.write(fnGetLocaleString("102527","CFB-AES-128"));</script></option>
+    </SELECT>
+    <input type="text" name="SNMP_V3TRAPAUTHPWD">
+    <input type="text" name="SNMP_V3TRAPPRVPWD">
+    <SELECT NAME="WEBSERVICE_print" SIZE=1 onchange="setValue('WEBSERVICE_print_id',getText('WEBSERVICE_print'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="WEBSERVICE_scan" SIZE=1 onchange="setValue('WEBSERVICE_scan_id',getText('WEBSERVICE_scan'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="WEBSERVICE_JobExecMode" SIZE=1 onchange="setValue('WEBSERVICE_JobExecMode_id',getText('WEBSERVICE_JobExecMode'))">
+        <option value="1"><script type="text/javascript">document.write(fnGetLocaleString("103352","Do not accept any job"));</script>
+        <option value="2"><script type="text/javascript">document.write(fnGetLocaleString("103353","Accept the job if user name is valid"));</script>
+        <option value="3"><script type="text/javascript">document.write(fnGetLocaleString("103354","Accept any job"));</script>
+    </SELECT>
+
+    <SELECT NAME="Stage2_enable" SIZE=1 onchange="setValue('Stage2_enable_id',getText('Stage2_enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="LLTD_enable" SIZE=1 onchange="setValue('LLTD_enable_id',getText('LLTD_enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="IPSec_Enable" SIZE=1 onchange="fnIpSecOnchange();">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="FTPCLIENT_SSLSetting" SIZE=1 onchange="setValue('FTPCLIENT_SSLSetting_id',getText('FTPCLIENT_SSLSetting'))">
+        <option value="VerifyImportedCert"><script type="text/javascript">document.write(fnGetLocaleString("102003","Verify with Imported Cert"));</script>
+        <option value="AcceptCertWithNoCA"><script type="text/javascript">document.write(fnGetLocaleString("100107","Accept all certificates without CA"));</script>
+    </SELECT>
+    <SELECT NAME="SLPSession_Enable" SIZE=1 onchange="setValue('SLPSession_Enable_id',getText('SLPSession_Enable'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+
+    <SELECT NAME="ENABLE_SSL" SIZE=1 onchange="setValue('ENABLE_SSL_id',getText('ENABLE_SSL'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+     </SELECT>
+
+     <SELECT NAME="Enable_SOAPXML_Interface" SIZE=1 onchange="setValue('Enable_SOAPXML_Interface_ID',getText('Enable_SOAPXML_Interface'))">
+        <option value="true"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="false"><script type="text/javascript">document.write(glDisable);</script>
+     </SELECT>
+     <SELECT NAME="EnableSoapSSL" SIZE=1 onchange="setValue('EnableSSL_ID',getText('EnableSoapSSL'))">
+        <option value="true"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="false"><script type="text/javascript">document.write(glDisable);</script>
+     </SELECT>
+         <input type="hidden" name="vr_ARP">
+         <input type="hidden" name="vr_SNMPIPV4">
+         <input type="hidden" name="vr_SNMPIPV6">
+         <input type="hidden" name="vr_SMB">
+         <input type="hidden" name="vr_Bonjor"> <!--either for setting bonjor or bonjoripv4-->
+         <input type="hidden" name="vr_Bonjor_ipv6">
+         <input type="hidden" name="vr_Airprint"><!--either for setting airprint or airprintipv4-->
+         <input type="hidden" name="vr_Airprint_ipv6">
+         <input type="hidden" name="vr_ND_LinkLocalAddr">
+         <input type="hidden" name="vr_ND_Manual">
+         <input type="hidden" name="vr_LLMNR">
+         <input type="hidden" name="vr_LLTD">
+         <input type="hidden" name="vr_SLP">
+         <input type="hidden" name="vr_WebService_IPV4">
+         <input type="hidden" name="vr_WebService_IPV6">
+         <input type="hidden" name="WakeUpSetting_Protocol" onchange="setValue('WakeUpSetting_Protocol_id',this.value);">
+         <input type="hidden" name="SMB_DomainLogin"> 
+    <script>
+    function fnIpSecOnchange(){
+        setValue('IPSec_Enable_id',getText('IPSec_Enable'));
+        if(getValue("IPSec_Enable") == "1"){
+            document.frmNetwork.BTNFLUSHCONNECTIONS.disabled=false;
+        }
+        else{
+            document.frmNetwork.BTNFLUSHCONNECTIONS.disabled=true;
+        }                                                                                                                       
+    }
+    </script>
+
+    <SELECT NAME="SNMP_EnableAuthTrap" SIZE=1 onchange="setValue('SNMP_EnableAuthTrap_id',getText('SNMP_EnableAuthTrap'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script></option>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script></option>
+    </SELECT>
+
+    <SELECT NAME="SNMP_EnableAlertTrap" SIZE=1 onchange="setValue('SNMP_EnableAlertTrap_id',getText('SNMP_EnableAlertTrap'))">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script></option>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script></option>
+    </SELECT>
+
+    <textarea NAME="DDNSPri_Password" ></textarea>
+    <textarea NAME="DDNSSec_Password" ></textarea>
+</div>
+
+<div id="DIV_TCP" style="display:none;">
+<a name="TCPIP">
+    <INPUT type=button value="TCP/IP" onClick="fnnOpenNewWindow('setting/tcpip.html')" >
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100681","Ethernet Speed Duplex Mode"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2" >
+		<font id="TCPIP_ether_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100130","Address Mode"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+       <font  id="TCPIP_AddressMode_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101278","Obtain a Domain Name automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2" >
+        <font id="TCPIP_DomainName_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100887","Host Name"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" >
+        <font id="TCPIP_HostName"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101279","Obtain a Domain Server Address automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2" >
+       <font id="TCPIP_DomainServerAddress_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101283","Obtain a WINS Server Address automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2" >
+       <font id="TCPIP_WINS_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101281","Obtain a SMTP Server Address automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+        <font  id="TCPIP_SMTP_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101280","Obtain a POP3 Server Address automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+       <font id="TCPIP_POP3_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101282","Obtain a SNTP Server Address automatically"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+       <font id="TCPIP_SNTP_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100954","IP Conflict Detect"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+        <font id="TCPIP_IPConflictDetect_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100952","IP Address"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+        <font id="TCPIP_IPAddress"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101793","Subnet Mask"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2" >
+        <font id="TCPIP_SubnetMask"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100455","Default Gateway"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan="2">
+        <font id="TCPIP_DefaultGateway"></font> &nbsp;
+    </TD>
+</TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<span style="display:none">
+    <SELECT NAME="parentSELIPEnable" SIZE=1 onchange="setValue('IPFirewallEnable_id',getText('parentSELIPEnable'))">
+        <option value="">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="parentSELMacEnable" SIZE=1 onchange="setValue('MACFirewallEnable_id',getText('parentSELMacEnable'))">
+        <option value="">
+        <option value="1"><script type="text/javascript">document.write(glEnable);</script>
+        <option value="0"><script type="text/javascript">document.write(glDisable);</script>
+    </SELECT>
+    <SELECT NAME="parentSELIPPermit" SIZE=1 onchange="setValue('IPFilterRule_id',getText('parentSELIPPermit'))">
+        <option value="">
+        <option value="2" ><script type="text/javascript">document.write(glPermit);</script>
+        <option value="1"><script type="text/javascript">document.write(glDeny);</script>
+    </SELECT>
+    <SELECT NAME="parentSELMACPermit" SIZE=1 onchange="setValue('MACFilterRule_id',getText('parentSELMACPermit'))">
+        <option value="">
+        <option value=2><script type="text/javascript">document.write(glPermit);</script>
+        <option value=1><script type="text/javascript">document.write(glDeny);</script>
+    </SELECT>
+    <input type="textarea" name="FirewallCommandXml" value="">
+<script>
+    var gblFirewallXmlObj = null;
+    var gblArrIPTable = null;
+    var gblArrMACTable = null;
+
+    var gblTempArrIPTable = null;
+    var gblTempArrMACTable = null;
+    var gblIPFirewallStatus = "";
+    var gblMacFirewallStatus = "";
+    var gblIPAction = "";
+    var gblMacAction = "";
+    var gblIpCount = 0;
+    var gblMacCount = 0;
+</script>
+</span>
+<div id="DIV_FIREWALL" style="display:none;">
+<a name="Firewall">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("103223","Filtering")+"\" onClick=\"fnnOpenNewWindow('setting/Firewall.html')\" >")</script>
+</a>
+	<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(fnGetLocaleString("100619","Enable IP Filtering"));</script>
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+			    <span id="IPFirewallEnable_id"></span> &nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+
+				<script type="text/javascript">document.write(fnGetLocaleString("100957","IP Filtering Rule"));</script>
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span  id="IPFilterRule_id"></span> &nbsp;
+			</TD>
+		</TR>
+		<TR >
+			<TD width=25% CLASS="clsBTableHeader" >
+				<script type="text/javascript">document.write(fnGetLocaleString("100956","IP Filtering"));</script>
+			</TD>
+
+			<TD width=25% CLASS="clsBTableHeader" >
+				<script type="text/javascript">document.write(fnGetLocaleString("101776","Start Address"));</script>
+			</TD>
+			<TD width=25% CLASS="clsBTableHeader" >
+				<script type="text/javascript">document.write(fnGetLocaleString("100654","End Address"));</script>
+			</TD>
+            <TD width=25% CLASS="clsBTableHeader" >
+                <script type="text/javascript">document.write(fnGetLocaleString("101437","Port Number"));</script>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" >
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 1
+			</TD>
+
+			<TD CLASS="clsBTableElement" >
+				<span id="IPfilter_1_start">0.0.0.0</span>
+			</TD>
+			<TD CLASS="clsBTableElement" >
+				<span id="IPfilter_1_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_1_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 2
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_2_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_2_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_2_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 3
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_3_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_3_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_3_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 4
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_4_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_4_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_4_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 5
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_5_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_5_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_5_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 6
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_6_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_6_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_6_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 7
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_7_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_7_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_7_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 8
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_8_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_8_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_8_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 9
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_9_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_9_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_9_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=25%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 10
+			</TD>
+
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_10_start">0.0.0.0</span>
+			</TD>
+			<TD  CLASS="clsBTableElement">
+				<span id="IPfilter_10_end">0.0.0.0</span>
+			</TD>
+            <TD CLASS="clsBTableElement" >
+                <span id="IPfilter_10_port">&nbsp;</span>
+            </TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(fnGetLocaleString("100627","Enable MAC Address Filtering"));</script>
+			</TD>
+
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACFirewallEnable_id"></span> &nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(fnGetLocaleString("101107","MAC Address Filtering Rule"));</script>
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span  id="MACFilterRule_id"></span> &nbsp;
+			</TD>
+
+		</TR>
+		<TR >
+			<TD width=30% CLASS="clsBTableHeader" >
+				<script type="text/javascript">document.write(fnGetLocaleString("101106","MAC Address Filtering"));</script>
+			</TD>
+			<TD CLASS="clsBTableHeader" colspan="3">
+				<script type="text/javascript">document.write(fnGetLocaleString("101105","MAC Address"));</script>
+			</TD>
+		</TR>
+		<TR>
+
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 1
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+			  <span id="MACfilter_1"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 2
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+			  <span id="MACfilter_2"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 3
+			</TD>
+
+			<TD CLASS="clsBTableElement" colspan="3">
+			   <span id="MACfilter_3"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 4
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+			    <span id="MACfilter_4"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 5
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+    			<span id="MACfilter_5"></span>&nbsp;
+			</TD>
+
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 6
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACfilter_6"></span>&nbsp;
+			</TD>
+		</TR>
+
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 7
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACfilter_7"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 8
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACfilter_8"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 9
+			</TD>
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACfilter_9"></span>&nbsp;
+			</TD>
+		</TR>
+		<TR>
+			<TD CLASS="clsBTableHeader" width=30%>
+				<script type="text/javascript">document.write(glFilter);</script>&nbsp; 10
+			</TD>
+
+			<TD CLASS="clsBTableElement" colspan="3">
+				<span id="MACfilter_10"></span>&nbsp;
+			</TD>
+		</TR>
+	</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_IPV6" style="display:none;">
+<a name="IPv6">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100978","IPv6")+"\" onClick=\"fnnOpenNewWindow('setting/IPv6.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100622","Enable IPv6"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font  id="IPv6_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101074","LLMNR"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font  id="IPv6_LLMNR_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101067","Link Local Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="IPv6_LinkLocalAddr"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100952","IP Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="IPv6_IPAddr"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101446","Prefix Length"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="IPv6_PrefixLength">0</font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100784","Gateway"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="IPv6_Gateway"></font> &nbsp;
+        </TD>
+    </TR>
+
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_IPX" style="display:none;">
+<a name="IPXSPX">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100981","IPX/SPX")+"\" onClick=\"fnnOpenNewWindow('setting/ipxspx.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100623","Enable IPX/SPX"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font  id="IPXSPX_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100767","Frame Type"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="IPXSPX_FrameType_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100112","Actual Frame"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="IPXSPX_ActualFrameType_id"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_APPLE" style="display:none;">
+<a name="APPLETALK">
+    <INPUT type=button value="Apple Talk" onClick="fnnOpenNewWindow('setting/AppleTalk.html')">
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100606',"Enable Apple Talk"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="APPLETALK_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100510',"Device Name"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="APPLETALK_DeviceName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString("100497","Desired Zone"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="APPLETALK_Zone"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_BONJOUR" style="display:none;">
+<a name="RENDEZVOUS">
+    <INPUT type=button value="Bonjour" onClick="fnnOpenNewWindow('setting/Rendevous.html')">
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100610',"Enable Bonjour"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="BONJOUR_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('101068',"Link-Local Host Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="BONJOUR_HostName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('101696',"Service Name"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font  id="BONJOUR_ServiceName"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_LDAP" style="display:none;">
+<a name="LDAP">
+    <script type="text/javascript">document.write('<INPUT type=button value="'+fnGetLocaleString("101050","LDAP Session")+'" onClick="fnnOpenNewWindow(\'setting/Ldap.html\')">');</script>
+
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100624',"Enable LDAP"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="LDAP_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100217',"Attribute 1"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="LDAP_Attribute1"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('100218',"Attribute 2"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="LDAP_Attribute2"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%><script type="text/javascript">document.write(fnGetLocaleString('101644',"Search Method"));</script>
+
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="LDAP_SearchMethod_id"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_DNS" style="display:none;">
+<a name="DNS">
+	<script> document.write("<INPUT type=button value=\""+fnGetLocaleString("100533","DNS Session")+"\" onClick=\"fnnOpenNewWindow('setting/dns.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100613","Enable DNS"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DNS_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101454","Primary DNS Server Address"));</script>            
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DNS_Primary"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101650","Secondary DNS Server Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="DNS_Secondary"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="DNS_PRI_IPV6" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101455","Primary DNS Server Address(IPv6)"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="DNS_PrimaryIPv6"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="DNS_SEC_IPV6" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101651","Secondary DNS Server Address(IPv6)"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font id="DNS_SecondaryIPv6"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_DDNS" style="display:none;">
+<a name="DDNS">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100446","DDNS Session")+"\" onClick=\"fnnOpenNewWindow('setting/ddns.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100612","Enable DDNS"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+             <font  id="DDNS_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100560","Domain Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DDNS_DomainName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101665","Security Method"));</script> 
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DDNS_Security"></font> &nbsp;
+        </TD>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101457","Primary Login Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DDNS_PrimaryLoginName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101652","Secondary Login Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="DDNS_SecondaryLoginName"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_SMB" style="display:none;">
+<a name="SMB">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("101733","SMB Session")+"\" onClick=\"fnnOpenNewWindow('setting/smb.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101732","SMB Server Protocol"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="SMB_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("103333","Restriction"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="SMB_Restriction_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101220","NetBIOS Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="SMB_NetBIOSName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("102033","Workgroup"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="SMB_Workgroup"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100559","Domain"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMB_Domain"></font> &nbsp;
+        </TD>
+    </TR><TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101456","Primary Domain Controller"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" >
+         <font id="SMB_Primary"></font> &nbsp;
+    </TD>
+</TR><TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100249","Backup Domain Controller"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" >
+         <font id="SMB_Controller"></font> &nbsp;
+    </TD>
+</TR><TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101090","Logon User Name"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" >
+         <font id="SMB_UserName"></font> &nbsp;
+    </TD>
+</TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101461","Primary WINS Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+             <font id="SMB_PrimaryWins"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101656","Secondary WINS Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMB_SecondaryWins"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("105372","Guest Logon"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMB_GuestLogon_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR >
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101992","User Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMB_AuthUserName"></font> &nbsp;
+        </TD>
+    </TR>
+
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101735","SMB Signing of SMB Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMB_Server_id"></font> &nbsp;
+        </TD>
+    </TR><TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101734","SMB Signing of SMB Client"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" >
+        <font id="SMB_Client_id"></font> &nbsp;
+    </TD>
+</TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_NETWARE" style="display:none;">
+<a name="NETWARE">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("101223","NetWare Session")+"\" onClick=\"fnnOpenNewWindow('setting/netware.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("103224","Enable NetWare"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="NETWARE_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100609","Enable Bindery"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="NETWARE_Bindery_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100628","Enable NDS"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="NETWARE_NDS_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100372","Context"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+			<font id="NETWARE_Context"></font> &nbsp;
+		</TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101935","Tree"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+			<font id="NETWARE_tree"></font> &nbsp;
+		</TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("103669","File Server Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+			<font id="NETWARE_SearchRoot"></font> &nbsp;
+		</TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_HTTP" style="display:none;">
+<a name="HTTP">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100892","HTTP Network Service")+"\" onClick=\"fnnOpenNewWindow('setting/http.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100617","Enable HTTP Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="HTTP_Enabled_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100645","Enable SSL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="HTTP_SSLEnabled_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101459","Primary Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="HTTP_PrimaryPort"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101654","Secondary Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="HTTP_SecondaryPort"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101767","SSL Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="HTTP_SSLPort"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_SMTPCLIENT" style="display:none;">
+<a name="SMTPCLIENT">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("101738","SMTP Client")+"\" onClick=\"fnnOpenNewWindow('setting/smtpclient.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100639","Enable SMTP Client"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="SMTPClient_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100645","Enable SSL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="SMTPClient_EnableSSL_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101769","SSL/TLS"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="SMTPClient_SSLTLS_id"></font> &nbsp;
+        </TD>
+    </TR>
+
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101741","SMTP Server Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPClient_ServerAddress"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101431","POP Before SMTP"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPClient_POPSMTP_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100224","Authentication"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="SMTPClient_Authentication_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("103386","Login Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPClient_LoginName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101147","Maximum Email / InternetFax Size"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="SMTPClient_MaxSize"></font> &nbsp;MB
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101437","Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPClient_PortNum"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101739","SMTP Client Connection Timeout(1-180)"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPClient_TimeOut">30</font> &nbsp;<script type="text/javascript">document.write(fnGetLocaleString("101657","Seconds"));</script>    
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_SMTPSERVER" style="display:none;">
+<a name="SMTPSERVER">
+    <script type="text/javascript">document.write("<INPUT type=button value=\"" + fnGetLocaleString("101740","SMTP Server") + "\" onClick=\"fnnOpenNewWindow('setting/smtpserver.html')\">");</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100640","Enable SMTP Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font id="SMTPServer_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101437","Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPServer_PortNum"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100588","Email Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPServer_EmailAddress"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100629","Enable OffRamp Gateway"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SMTPServer_Gateway_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101288","OffRamp Security"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="SMTPServer_Security_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101287","OffRamp Print"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font  id="SMTPServer_Print_id"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_POP3" style="display:none;">
+<a name="POP3">
+    <script type="text/javascript">document.write("<INPUT type=button value=\"" + fnGetLocaleString("101434","POP3 Network Service") + "\" onClick=\"fnnOpenNewWindow('setting/pop3.html')\" >");</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100632","Enable POP3 Client"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font id="POP3_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100645","Enable SSL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="POP3_SSL_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101436","POP3 Server Address"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+			<font  id="POP3_ServerAddress"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100224","Authentication"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+			<font  id="POP3_Auth_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101947","Type POP3 Login"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+		<font id="POP3_LoginType_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100110","Account Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="POP3_AccountName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101626","Scan Rate"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="POP3_ScanRate"></font> &nbsp;<script type="text/javascript">document.write(fnGetLocaleString("101192","Minutes"));</script>
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101437","Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="POP3_PortNumber"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101767","SSL Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="POP3_SSLPortNum"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101433","POP3 Client Connection Timeout (1-180)"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="POP3_TimeOut">30</font> &nbsp;<script type="text/javascript">document.write(fnGetLocaleString("101657","Seconds"));</script>
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_FTPCLIENT" style="display:none;">
+<a name="FTPCLIENT">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100778","FTP Client")+"\" onClick=\"fnnOpenNewWindow('setting/ftpclient.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("103356","SSL Setting"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+           <font id="FTPCLIENT_SSLSetting_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100457","Default Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+           <font id="FTPCLIENT_PortNum"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_FTPSERVER" style="display:none;">
+<a name="FTPSERVER">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100780","FTP Server")+"\" onClick=\"fnnOpenNewWindow('setting/ftpserver.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100616","Enable FTP Server"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="FTPSERVER_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100645","Enable SSL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="FTPSERVER_SSL_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100457","Default Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+           <font id="FTPSERVER_PortNum"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101767","SSL Port Number"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+           <font id="FTPSERVER_SSLPortNum"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_SLP" style="display:none;">
+<a name="SLPSESSION">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("101729","SLP Session")+"\" onClick=\"fnnOpenNewWindow('setting/slpsession.html')\" >")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("100638","Enable SLP"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SLPSession_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101940","TTL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="SLPSessionTTL_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString("101638","Scope"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+           <font id="SLPSession_Scope"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_SNMP" style="display:none;">
+<a name="SNMP">
+    <script type="text/javascript">document.write("<INPUT id='btn_SNMP' type=button value=\""+fnGetLocaleString('101742','SNMP Network Service')+"\"  onClick=\"setValue('tmpSNMPUserStr',getValue('SNMPUserStr'));setValue('tmpDelSNMPUserStr',getValue('DelSNMPUserStr'));fnnOpenNewWindow('setting/snmp.html')\"  > ");</script>
+</a>
+<span style="display:none">
+    <textarea name="SMTPMAXSIZE_CMDXML"></textarea>
+    <input type="textarea" name="SNMPCmdXml" value="">
+    <input type="text" name="tmpSNMPUserStr" value="">
+    <input type="text" name="tmpDelSNMPUserStr" value="">
+    <input type="text" name="DelSNMPUserStr" value="">
+    <input type="text" name="SNMPUserStr" value="">
+    <input type="text" name="savedSNMPUserStr" value="">
+    <input type="text" id="boolSNMPErrFlag" value=false>
+</span>
+<span id="parentSNMPTbl_id">
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800" id="tblSNMP_id">
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100641","Enable SNMP V1/V2"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+       <font id="SNMP_Enable_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101530","Read Community"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_Community"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101533","Read Write Community"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_RWCommunity"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100642","Enable SNMP V3"));</script>
+
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_EnableV3_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR id="TR_SNMPV3USERHEADER_ID">
+    <TD CLASS="clsBTableHeader" NOWRAP WIDTH=30%>                       
+        <script type="text/javascript">document.write(fnGetLocaleString("101748","SNMP V3 User Information")+"/"+fnGetLocaleString("101268","Number"));</script>
+    </TD>
+    <TD CLASS="clsBTableHeader" NOWRAP WIDTH=20%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101992","User Name"));</script>
+    </TD>
+    <TD CLASS="clsBTableHeader" NOWRAP WIDTH=17%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100228","Authentication Protocol"));</script>
+    </TD>
+    <TD CLASS="clsBTableHeader" WIDTH=17%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101492","Privacy Protocol"));</script>
+    </TD>
+    <TD CLASS="clsBTableHeader" WIDTH=16%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101375","Permissions Level"));</script>
+    </TD>
+</TR>
+
+<SCRIPT LANGUAGE = "JavaScript">
+    // This Function is used to dynamically populate SNMP V3 user info in Network.html.
+    //It dynamically adds/deletes user rows from SNMP table depending on input taken from hidden field "SNMPUserStr".        
+    function fnConstSNMPV3UsrList(){
+
+        var usrList = getValue("SNMPUserStr");
+
+        usrList = usrList.split(gblDestSep2);
+        var startRowIndex = document.getElementById("TR_SNMPV3USERHEADER_ID").rowIndex;
+        var endRowIndex = document.getElementById("TR_SNMPV3TRAP_id").rowIndex;
+        startRowIndex = parseInt(startRowIndex,10)+1; //first User row
+        endRowIndex = parseInt(endRowIndex,10)-1;   // last User row
+        // for deleting the rows
+        for(var j = endRowIndex ;j >= startRowIndex;j--){
+            document.getElementById('tblSNMP_id').deleteRow(j);
+        }
+        if(usrList != ""){
+
+            // for inserting the rows..
+            for(var i=0,k=startRowIndex;i<usrList.length;i++,k++){
+                var tmpUsrData = usrList[i].split(gblDestSep1);
+                var newRow = document.getElementById("tblSNMP_id").insertRow(k);
+                var oCell = newRow.insertCell(0);
+                oCell.className = "clsBTableHeader";
+                oCell.innerHTML = tmpUsrData[0];
+
+                oCell = newRow.insertCell(1);
+                oCell.className = "clsBTableElement";
+                oCell.innerHTML = "&nbsp;";
+                if(tmpUsrData[1] != "")
+                    oCell.childNodes[0].nodeValue = tmpUsrData[1];
+
+                oCell = newRow.insertCell(2);
+                oCell.className = "clsBTableElement";
+                if(tmpUsrData[2] != "")
+                    oCell.innerHTML = tmpUsrData[2];
+                else
+                    oCell.innerHTML = "&nbsp;";
+
+                oCell = newRow.insertCell(3);
+                oCell.className = "clsBTableElement";
+                if(tmpUsrData[4] != "")
+                    oCell.innerHTML = (tmpUsrData[4] == "None") ? fnGetLocaleString("101247","None") : tmpUsrData[4];
+                else
+                    oCell.innerHTML = "&nbsp;";
+
+                oCell = newRow.insertCell(4);
+                oCell.className = "clsBTableElement";
+                if(tmpUsrData[6] == "Administrator")
+                    oCell.innerHTML = fnGetLocaleString("102505","Administrator");
+                else if(tmpUsrData[6] == "General User")
+                    oCell.innerHTML = fnGetLocaleString("102528","General User");
+                else
+                    oCell.innerHTML = "&nbsp;";
+            }
+        }
+        if(oAgentSetWin != null && oAgentSetWin.location.href.indexOf("snmp.html")!= -1){
+            oAgentSetWin.focus();
+            oAgentSetWin.fnRenderTable();
+        }
+    }
+
+</SCRIPT>
+<TR id="TR_SNMPV3TRAP_id">
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100643","Enable SNMP V3 Trap"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_EnableV3Trap_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101747","SNMP V3 Trap User Name"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_V3TrapUserName"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101744","SNMP V3 Trap Authentication Protocol"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_V3TrapAuthProtocol_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("101746","SNMP V3 Trap Privacy Protocol"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_V3TrapPrivacyProtocol_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100608","Enable Authentication Trap"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_EnableAuthTrap_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100605","Enable Alerts Trap"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+       <font id="SNMP_EnableAlertTrap_id"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100959","IP Trap Address1"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP1">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100961","IP Trap Address2"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP2">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100962","IP Trap Address3"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP3">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100963","IP Trap Address4"));</script>
+    </TD>
+    <TD  CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP4">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100964","IP Trap Address5"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP5">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100965","IP Trap Address6"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP6">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100966","IP Trap Address7"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP7">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30% >
+        <script type="text/javascript">document.write(fnGetLocaleString("100967","IP Trap Address8"));</script>
+
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP8">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100968","IP Trap Address9"));</script>
+
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP9">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100960","IP Trap Address10"));</script>
+
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4><font id="SNMP_TrapIP10">0.0.0.0</font>&nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100969","IP Trap Community"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_IPTrapCommunity"></font> &nbsp;
+    </TD>
+</TR>
+<TR>
+    <TD  CLASS="clsBTableHeader" width=30%>
+        <script type="text/javascript">document.write(fnGetLocaleString("100980","IPX Trap Address"));</script>
+    </TD>
+    <TD CLASS="clsBTableElement" colspan=4>
+        <font id="SNMP_IPXTrapAddress"></font> &nbsp;
+    </TD>
+</TR>
+</table>
+</span>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="DIV_WEBSERVICE" style="display:none;">
+<a name="WEBSERVICESETTING">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("102012","Web Services Setting")+"\" onClick=\"fnnOpenNewWindow('setting/webservicesetting.html')\">")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR id="WEBSERV_SSL" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('100645',"Enable SSL"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="ENABLE_SSL_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="WEBSERV_FRIENDLYNAME" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('100769',"Friendly Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="WEBSERVICE_friendlyName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="WEBSERV_PRINT" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('102009',"Web Services Print"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="WEBSERVICE_print_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="WEBSERV_PRINTERNAME" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('101486',"Printer Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font id="WEBSERVICE_printerName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="WEBSERV_PRINTINFO" style="display:none;">
+        <TD CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('101484',"Printer Information"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font id="WEBSERVICE_print_inf"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('102010',"Web Services Scan"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement" >
+            <font id="WEBSERVICE_scan_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('101633',"Scanner Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="WEBSERVICE_scannerName"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('101632',"Scanner Information"));</script></TD>
+        <TD CLASS=clsBTableElement>
+            <font  id="WEBSERVICE_scan_inf"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR id="WEBSERV_AUTHSCAN" style="display:none;">
+        <TD  CLASS="clsBTableHeader" width=30% nowrap>
+            <script type="text/javascript">document.write(fnGetLocaleString('103351',"Authentication for PC Initiated Scan"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="WEBSERVICE_JobExecMode_id"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+
+<div id="DIV_LLTD" style="display:none;">
+<a name="LLTDSESSION">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("101075","LLTD Session")+"\" onClick=\"fnnOpenNewWindow('setting/LLTDsession.html')\">")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('100625',"Enable LLTD"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="LLTD_enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('100510',"Device Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="LLTD_deviceName"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+
+<BR>
+</div>
+<div id="DIV_WAKEUP" style="display:none;">
+<a name="WAKEUPSETTING">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("103335","Wake Up Setting")+"\" onClick=\"fnnOpenNewWindow('setting/WakeUpSetting.html')\">")</script>
+</a>
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR id="ID_SUPER_SLEEP" style="display: none;">
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('103222',"Super Sleep"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="SuperSleep_enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('101508',"Protocol"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="WakeUpSetting_Protocol_id"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+<BR>
+</div>
+<div id="IPSEC_ID" style="display:none;">
+<a name="IPSecurity">
+    <script type="text/javascript">document.write("<INPUT type=button value=\""+fnGetLocaleString("100958","IP Security")+"\" onClick=\"fnnOpenNewWindow('setting/ipsec/IPSecurityFrame.html')\">")
+    document.write("<INPUT type=button value=\""+fnGetLocaleString("100752","Flush Connections")+"\" name='BTNFLUSHCONNECTIONS' onClick=\"fnnFlushConnection()\">")
+    </script>
+</a>
+<span style="display:none;">
+<input type="textarea" name="IPSecCmdXml" value=''>
+<input type="textarea" name="IPSECFILTERDATA" value=''>
+<input type="text" name="IPSEC_DELETED_FILTERS" value=''>
+<input type="textarea" name="IPSECIKEDATA" value=''>
+<input type="text" name="IPSEC_DELETED_IKE" value=''>
+<input type="textarea" name="IPSEC_PROFILE_DATA" value=''>
+<input type="text" name="IPSEC_DELETED_PROFILE" value=''>
+<input type="textarea" name="IPSEC_MANUAL_DATA" value=''>
+<input type="text" name="IPSEC_DELETED_MANUAL" value=''>
+<input type="textarea" name="IPSEC_POLICY_DATA" value=''>
+<input type="text" name="IPSEC_DELETED_POLICY" value=''>
+</span>    
+<table BORDER="1" CELLSPACING="1" CELLPADDING="1" WIDTH="800">
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('100621',"Enable IPSec"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+           <font id="IPSec_Enable_id"></font> &nbsp;
+        </TD>
+    </TR>
+    <TR>
+        <TD  CLASS="clsBTableHeader" width=30%>
+            <script type="text/javascript">document.write(fnGetLocaleString('101428',"Policy Name"));</script>
+        </TD>
+        <TD CLASS="clsBTableElement">
+            <font  id="Policy_Name"></font> &nbsp;
+        </TD>
+    </TR>
+</table>
+<a href="#TOP" class="clsJumpToLink" onClick="javascript:fnnJumpTop()"><script type="text/javascript">document.write(glGoToTop);</script></a><BR>
+</div>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+</form>
+</div>
+</BODY>
+</html>
