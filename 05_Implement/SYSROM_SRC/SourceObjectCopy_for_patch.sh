@@ -334,7 +334,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/bin/alreportmanager
 #$EB2/build/release/bin/alreportsmsgr
 #$EB2/build/release/bin/alrestrictionmode
-$EB2/build/release/bin/alrolemgr
+#$EB2/build/release/bin/alrolemgr
 #$EB2/build/release/bin/alsapclient
 #$EB2/build/release/bin/alsapd
 #$EB2/build/release/bin/alsecurityconfiguration
@@ -343,7 +343,7 @@ $EB2/build/release/bin/alrolemgr
 #$EB2/build/release/bin/alslp
 #$EB2/build/release/bin/alsoftwareupdateclient
 #$EB2/build/release/bin/alspxd
-$EB2/build/release/bin/alstage2
+#$EB2/build/release/bin/alstage2
 #$EB2/build/release/bin/altelnet
 #$EB2/build/release/bin/altestbonjourmgr
 #$EB2/build/release/bin/altestlog
@@ -619,14 +619,14 @@ $EB2/build/release/bin/alstage2
 #$EB2/build/release/lib/libnetworkmsglog.so.0
 #$EB2/build/release/lib/libpipe.so.0.0
 #$EB2/build/release/lib/libplatformview.so.0.0
-$EB2/build/release/lib/librbacmanager.so.0
+#$EB2/build/release/lib/librbacmanager.so.0
 #$EB2/build/release/lib/libRemoteIFScanWF.so.0
 #$EB2/build/release/lib/libsambasendservice.so.0
 #$EB2/build/release/lib/libsecurityimportexportmanager.so.0
 #$EB2/build/release/lib/libshmemutil.so.0
 #$EB2/build/release/lib/libskuld.so.0.0
 #$EB2/build/release/lib/libssdk.la
-$EB2/build/release/lib/libssdk.so.0.0.0
+#$EB2/build/release/lib/libssdk.so.0.0.0
 #$EB2/build/release/lib/libssdkexport.la
 #$EB2/build/release/lib/libssdkexport.so.0.0.0
 #$EB2/build/release/lib/libsysASIC.so.0.0
