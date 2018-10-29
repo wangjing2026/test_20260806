@@ -299,7 +299,7 @@ echo "### Building CI components ###"
 folders=(
 #$ROOT_DIR/dev/CI
 #$ROOT_DIR/dev/CI/SoftwareDiagnostics/src
-$ROOT_DIR/dev/CI/SI
+#$ROOT_DIR/dev/CI/SI
 #$ROOT_DIR/dev/CI/OperatingEnvironment
 #$ROOT_DIR/dev/CI/OperatingEnvironment/src
 #$ROOT_DIR/dev/CI/OperatingEnvironment64
@@ -491,7 +491,7 @@ folders=(
 #$ROOT_DIR/dev/AL/SoftwareFunction/JobTemplates
 #$ROOT_DIR/dev/AL/SoftwareFunction/MailBox/src
 #$ROOT_DIR/dev/AL/SoftwareFunction/LogRetriever
-$ROOT_DIR/dev/AL/SoftwareFunction/RbacManagerLibrary
+#$ROOT_DIR/dev/AL/SoftwareFunction/RbacManagerLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/GroupManagerLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/UserExportImportLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/SecurityExportImportLibrary
@@ -505,7 +505,7 @@ $ROOT_DIR/dev/AL/SoftwareFunction/RbacManagerLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/ViewPlugin
 #$ROOT_DIR/dev/AL/SoftwareFunction/ViewPlugin/ViewPluginLib
 #$ROOT_DIR/dev/AL/SoftwareFunction/GroupManager
-$ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
+#$ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
 #$ROOT_DIR/dev/AL/SoftwareFunction/LogManager
 #$ROOT_DIR/dev/AL/SoftwareFunction/PDLFilters
 #$ROOT_DIR/dev/AL/SoftwareFunction/CloningPlugin
@@ -528,7 +528,7 @@ $ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
 #$ROOT_DIR/dev/AL/ApplicationServers/FileDownloader
 #$ROOT_DIR/dev/AL/ApplicationServers/eFIRemoteIFServer
 #$ROOT_DIR/dev/AL/TopAccess
-$ROOT_DIR/dev/AL/Stage2
+#$ROOT_DIR/dev/AL/Stage2
 #$ROOT_DIR/dev/AL/AppAccessor
 #$ROOT_DIR/dev/AL/GSI
 #$ROOT_DIR/Resources
