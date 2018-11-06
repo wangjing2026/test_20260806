@@ -491,7 +491,7 @@ folders=(
 #$ROOT_DIR/dev/AL/SoftwareFunction/JobTemplates
 #$ROOT_DIR/dev/AL/SoftwareFunction/MailBox/src
 #$ROOT_DIR/dev/AL/SoftwareFunction/LogRetriever
-#$ROOT_DIR/dev/AL/SoftwareFunction/RbacManagerLibrary
+$ROOT_DIR/dev/AL/SoftwareFunction/RbacManagerLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/GroupManagerLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/UserExportImportLibrary
 #$ROOT_DIR/dev/AL/SoftwareFunction/SecurityExportImportLibrary
@@ -505,7 +505,7 @@ folders=(
 #$ROOT_DIR/dev/AL/SoftwareFunction/ViewPlugin
 #$ROOT_DIR/dev/AL/SoftwareFunction/ViewPlugin/ViewPluginLib
 #$ROOT_DIR/dev/AL/SoftwareFunction/GroupManager
-#$ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
+$ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
 #$ROOT_DIR/dev/AL/SoftwareFunction/LogManager
 #$ROOT_DIR/dev/AL/SoftwareFunction/PDLFilters
 #$ROOT_DIR/dev/AL/SoftwareFunction/CloningPlugin
