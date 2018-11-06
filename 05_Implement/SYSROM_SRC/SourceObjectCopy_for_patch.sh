@@ -334,7 +334,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/bin/alreportmanager
 #$EB2/build/release/bin/alreportsmsgr
 #$EB2/build/release/bin/alrestrictionmode
-#$EB2/build/release/bin/alrolemgr
+$EB2/build/release/bin/alrolemgr
 #$EB2/build/release/bin/alsapclient
 #$EB2/build/release/bin/alsapd
 #$EB2/build/release/bin/alsecurityconfiguration
@@ -619,7 +619,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/lib/libnetworkmsglog.so.0
 #$EB2/build/release/lib/libpipe.so.0.0
 #$EB2/build/release/lib/libplatformview.so.0.0
-#$EB2/build/release/lib/librbacmanager.so.0
+$EB2/build/release/lib/librbacmanager.so.0
 #$EB2/build/release/lib/libRemoteIFScanWF.so.0
 #$EB2/build/release/lib/libsambasendservice.so.0
 #$EB2/build/release/lib/libsecurityimportexportmanager.so.0
