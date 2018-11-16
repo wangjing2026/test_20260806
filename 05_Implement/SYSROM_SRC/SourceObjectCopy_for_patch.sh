@@ -343,7 +343,7 @@ $EB2/build/release/bin/alrolemgr
 #$EB2/build/release/bin/alslp
 #$EB2/build/release/bin/alsoftwareupdateclient
 #$EB2/build/release/bin/alspxd
-#$EB2/build/release/bin/alstage2
+$EB2/build/release/bin/alstage2
 #$EB2/build/release/bin/altelnet
 #$EB2/build/release/bin/altestbonjourmgr
 #$EB2/build/release/bin/altestlog
