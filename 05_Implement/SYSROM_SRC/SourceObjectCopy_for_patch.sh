@@ -626,7 +626,7 @@ $EB2/build/release/lib/librbacmanager.so.0
 #$EB2/build/release/lib/libshmemutil.so.0
 #$EB2/build/release/lib/libskuld.so.0.0
 #$EB2/build/release/lib/libssdk.la
-#$EB2/build/release/lib/libssdk.so.0.0.0
+$EB2/build/release/lib/libssdk.so.0.0.0
 #$EB2/build/release/lib/libssdkexport.la
 #$EB2/build/release/lib/libssdkexport.so.0.0.0
 #$EB2/build/release/lib/libsysASIC.so.0.0
