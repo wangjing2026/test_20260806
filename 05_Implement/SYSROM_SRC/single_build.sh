@@ -299,7 +299,7 @@ echo "### Building CI components ###"
 folders=(
 #$ROOT_DIR/dev/CI
 #$ROOT_DIR/dev/CI/SoftwareDiagnostics/src
-#$ROOT_DIR/dev/CI/SI
+$ROOT_DIR/dev/CI/SI
 #$ROOT_DIR/dev/CI/OperatingEnvironment
 #$ROOT_DIR/dev/CI/OperatingEnvironment/src
 #$ROOT_DIR/dev/CI/OperatingEnvironment64
