@@ -528,7 +528,7 @@ $ROOT_DIR/dev/AL/SoftwareFunction/RbacManager
 #$ROOT_DIR/dev/AL/ApplicationServers/FileDownloader
 #$ROOT_DIR/dev/AL/ApplicationServers/eFIRemoteIFServer
 #$ROOT_DIR/dev/AL/TopAccess
-#$ROOT_DIR/dev/AL/Stage2
+$ROOT_DIR/dev/AL/Stage2
 #$ROOT_DIR/dev/AL/AppAccessor
 #$ROOT_DIR/dev/AL/GSI
 #$ROOT_DIR/Resources
