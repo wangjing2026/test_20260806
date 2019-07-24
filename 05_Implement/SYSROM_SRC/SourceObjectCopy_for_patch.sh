@@ -396,7 +396,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/bin/dimwparamdata.csv
 #$EB2/build/release/bin/dump_load_rbac_data.bash
 #$EB2/build/release/bin/ebx_all_check
-#$EB2/build/release/bin/ebx_dl
+$EB2/build/release/bin/ebx_dl
 #$EB2/build/release/bin/ebx_startup_check
 #$EB2/build/release/bin/eBXDebugLogUtility
 #$EB2/build/release/bin/ebx-ldap-install.bash
