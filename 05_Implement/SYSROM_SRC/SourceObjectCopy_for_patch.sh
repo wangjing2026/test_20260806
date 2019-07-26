@@ -378,7 +378,7 @@ PATCH_ITEMS=(
 #$EB2/build/release/bin/cisystemresourcemanager
 #$EB2/build/release/bin/cithreadtest
 #$EB2/build/release/bin/configure_preui
-#$EB2/build/release/bin/cpe
+$EB2/build/release/bin/cpe
 #$EB2/build/release/bin/CreateDynamicTransDoc
 #$EB2/build/release/bin/dbcreate.frames.LOIRE
 #$EB2/build/release/bin/dbcreate.screens.LOIRE
