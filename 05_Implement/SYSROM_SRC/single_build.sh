@@ -599,7 +599,7 @@ folders=(
 #$ROOT_DIR/dev/DL/AnnotationLibWrapper
 #$ROOT_DIR/dev/DL/SkuldLib
 #$ROOT_DIR/dev/DL/DIM
-#$ROOT_DIR/dev/DL/CPE
+$ROOT_DIR/dev/DL/CPE
 #$ROOT_DIR/dev/DL/DEM
 #$ROOT_DIR/dev/DL/PE/PE_EmailSend
 #$ROOT_DIR/dev/DL/PE/PE_CnvtToTIFF
